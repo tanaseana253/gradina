@@ -194,75 +194,75 @@
 
 
 
-{#<!DOCTYPE html>#}
-{##}
-{#<html>#}
-{##}
-{#<head>#}
-{#    <meta charset="utf-8">#}
-{#    <title>Order Confirmation</title>#}
-{#    <style>#}
-{#        body {#}
-{#            font-family: Arial, sans-serif;#}
-{#            line-height: 1.6;#}
-{#        }#}
-{#        .container {#}
-{#            padding: 20px;#}
-{#            background-color: #f9f9f9;#}
-{#        }#}
-{#        .order-summary {#}
-{#            margin-top: 20px;#}
-{#        }#}
-{#        .order-summary h3 {#}
-{#            margin-bottom: 10px;#}
-{#        }#}
-{#        .order-summary ul {#}
-{#            list-style-type: none;#}
-{#            padding: 0;#}
-{#        }#}
-{#        .order-summary li {#}
-{#            margin-bottom: 8px;#}
-{#        }#}
-{#        .total {#}
-{#            font-weight: bold;#}
-{#        }#}
-{#    </style>#}
-{#</head>#}
-{##}
-{#<body>#}
-{#    <div class="container">#}
-{#        <h2>Thank you for your order!</h2>#}
-{#        <p>Hello {{ user_email }},</p>#}
-{#        <p>We’ve received your order and are preparing it for delivery. Below is a summary of your order:</p>#}
-{##}
-{#        <div class="order-summary">#}
-{#            <h3>Order Details:</h3>#}
-{#            <ul>#}
-{#                {% for item in cart %}#}
-{#                    <li>{{ item.quantity }} x {{ item.productName }} @ {{ item.price }} RON each</li>#}
-{#                {% endfor %}#}
-{#            </ul>#}
-{#            <p class="total">Total: {{ total|floatformat:2 }} RON</p>#}
-{#        </div>#}
-{##}
-{#        <h3>Delivery Details:</h3>#}
-{#        <p>Address: {{ delivery_info.address|default:"Not provided" }}</p>#}
-{#        <p>Name: {{ delivery_info.name|default:"Not provided" }}</p>#}
-{#        <p>Phone: {{ delivery_info.phone|default:"Not provided" }}</p>#}
-{##}
-{#        <h3>Billing Details:</h3>#}
-{#        <p>Address: {{ billing_info.address }}</p>#}
-{#        <p>Name: {{ billing_info.name }}</p>#}
-{#        <p>Phone: {{ billing_info.phone }}</p>#}
-{##}
-{#        <h3>Payment Method:</h3>#}
-{#        <p>{{ payment_method_display}}</p> <!-- Include payment method here -->#}
-{##}
-{#        <p>If you have any questions, feel free to contact us.</p>#}
-{#        <p>Thank you for shopping with us!</p>#}
-{##}
-{#        <p><strong>The Store Team</strong></p>#}
-{#    </div>#}
-{#</body>#}
-{##}
-{#</html>#}
+<!--{#<!DOCTYPE html>#}-->
+<!--{##}-->
+<!--{#<html>#}-->
+<!--{##}-->
+<!--{#<head>#}-->
+<!--{#    <meta charset="utf-8">#}-->
+<!--{#    <title>Order Confirmation</title>#}-->
+<!--{#    <style>#}-->
+<!--{#        body {#}-->
+<!--{#            font-family: Arial, sans-serif;#}-->
+<!--{#            line-height: 1.6;#}-->
+<!--{#        }#}-->
+<!--{#        .container {#}-->
+<!--{#            padding: 20px;#}-->
+<!--{#            background-color: #f9f9f9;#}-->
+<!--{#        }#}-->
+<!--{#        .order-summary {#}-->
+<!--{#            margin-top: 20px;#}-->
+<!--{#        }#}-->
+<!--{#        .order-summary h3 {#}-->
+<!--{#            margin-bottom: 10px;#}-->
+<!--{#        }#}-->
+<!--{#        .order-summary ul {#}-->
+<!--{#            list-style-type: none;#}-->
+<!--{#            padding: 0;#}-->
+<!--{#        }#}-->
+<!--{#        .order-summary li {#}-->
+<!--{#            margin-bottom: 8px;#}-->
+<!--{#        }#}-->
+<!--{#        .total {#}-->
+<!--{#            font-weight: bold;#}-->
+<!--{#        }#}-->
+<!--{#    </style>#}-->
+<!--{#</head>#}-->
+<!--{##}-->
+<!--{#<body>#}-->
+<!--{#    <div class="container">#}-->
+<!--{#        <h2>Thank you for your order!</h2>#}-->
+<!--{#        <p>Hello {{ user_email }},</p>#}-->
+<!--{#        <p>We’ve received your order and are preparing it for delivery. Below is a summary of your order:</p>#}-->
+<!--{##}-->
+<!--{#        <div class="order-summary">#}-->
+<!--{#            <h3>Order Details:</h3>#}-->
+<!--{#            <ul>#}-->
+<!--{#                {% for item in cart %}#}-->
+<!--{#                    <li>{{ item.quantity }} x {{ item.productName }} @ {{ item.price }} RON each</li>#}-->
+<!--{#                {% endfor %}#}-->
+<!--{#            </ul>#}-->
+<!--{#            <p class="total">Total: {{ total|floatformat:2 }} RON</p>#}-->
+<!--{#        </div>#}-->
+<!--{##}-->
+<!--{#        <h3>Delivery Details:</h3>#}-->
+<!--{#        <p>Address: {{ delivery_info.address|default:"Not provided" }}</p>#}-->
+<!--{#        <p>Name: {{ delivery_info.name|default:"Not provided" }}</p>#}-->
+<!--{#        <p>Phone: {{ delivery_info.phone|default:"Not provided" }}</p>#}-->
+<!--{##}-->
+<!--{#        <h3>Billing Details:</h3>#}-->
+<!--{#        <p>Address: {{ billing_info.address }}</p>#}-->
+<!--{#        <p>Name: {{ billing_info.name }}</p>#}-->
+<!--{#        <p>Phone: {{ billing_info.phone }}</p>#}-->
+<!--{##}-->
+<!--{#        <h3>Payment Method:</h3>#}-->
+<!--{#        <p>{{ payment_method_display}}</p> &lt;!&ndash; Include payment method here &ndash;&gt;#}-->
+<!--{##}-->
+<!--{#        <p>If you have any questions, feel free to contact us.</p>#}-->
+<!--{#        <p>Thank you for shopping with us!</p>#}-->
+<!--{##}-->
+<!--{#        <p><strong>The Store Team</strong></p>#}-->
+<!--{#    </div>#}-->
+<!--{#</body>#}-->
+<!--{##}-->
+<!--{#</html>#}-->
