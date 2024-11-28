@@ -1,0 +1,1 @@
+web: gunicorn gradinaCraciun.wsgi --log-file -
