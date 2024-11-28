@@ -1,0 +1,1198 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+    <div class="main-container">
+        <div class="main-container-top-above">
+            <div class="main-container-top">
+                <div class="logo-text-container">
+                    <a href="{% url 'product_list' %}">
+                        <img src="{% static 'images/logo_gradina_craciun_white.png' %}" alt="Logo">
+                    </a>
+                    <h1 class="h1-text logo-text">BĂCĂNIA GRĂDINA CRĂCIUN</h1>
+                </div>
+                <div class="sign-in">
+                    {% if request.user.is_authenticated %}
+                         <!-- Dropdown Button -->
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                Salut, {{ request.user.first_name|default:"Salut" }}
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+{#                                <li><a class="dropdown-item" href="#">Profil</a></li>#}
+{#                                <li><a class="dropdown-item" href="#">Istoric comenzi</a></li>#}
+                                <li><a class="dropdown-item" href="{% url 'password_reset' %}">Schimba parola</a></li>
+                                <li>
+                                    <form id="logout-form" method="post" action="{% url 'logout' %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item" style="background:none; border:none; color:black; cursor:pointer;">
+                                            Ieși din cont
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a class="signin-button" href="{% url 'login' %}" role="button">Autentificare</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="conf-panel-container">
+{#            Div cu lista intreaga de produse si search, ca sa fie corelate radid fct de butoane + si -; nu eficient,dar radip#}
+            <div class="content-container" style="display: none">
+                <div class="content-container-top">
+                    <div class="search_bar">
+                        <input type="text" id="myInput" class="search_input" onkeyup="gc_searchFunction()" placeholder="Caută în băcănie" title="Caută un produs">
+                    </div>
+
+                    <form class="filter-form">
+                        <div class="chip_container">
+                            <input type="checkbox" class="checkboxFilterContainer checkbox" value="legume" id="filtru_legume">
+                            <label class="filter-button" for="filtru_legume">Legume</label>
+                        </div>
+                        <div class="chip_container">
+                            <input type="checkbox" class="checkboxFilterContainer checkbox" value="fructe" id="filtru_fructe">
+                            <label class="filter-button" for="filtru_fructe">Fructe</label>
+                        </div>
+                        <div class="chip_container">
+                            <input type="checkbox" class="checkboxFilterContainer checkbox" value="conserve" id="filtru_conserve">
+                            <label class="filter-button" for="filtru_conserve">Conserve</label>
+                        </div>
+                        <div class="chip_container">
+                            <input type="checkbox" class="checkboxFilterContainer checkbox" value="alte bunatati" id="filtru_alte_bunatati">
+                            <label class="filter-button" for="filtru_alte_bunatati">Alte bunătăți</label>
+                        </div>
+                        <div class="chip_container">
+                            <input type="checkbox" class="checkboxFilterContainer checkbox" value="in_stoc" id="filtru_in_stoc">
+                            <label class="filter-button" for="filtru_in_stoc">În stoc</label>
+                        </div>
+                        <div class="chip_container">
+                            <input type="checkbox" class="checkboxFilterContainer checkbox" value="favorite" id="filtru_favorite">
+                            <label class="filter-button" for="filtru_favorite">Favorite</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="product-container" id="search_all_products">
+                    {% for product in products %}
+                            <div class="card-enabled-gc" id="product-card-{{ product.id }}" data-product-name="{{ product.name }}" data-favorites="{% if product.is_favorited %}true{% else %}false{% endif %}">                            <div class="card-image-container">
+                                <img class="card-img-product" id="card-image-id" src="{{ product.image.url }}" alt="Card image cap">
+
+                            </div>
+                            <div class="card-footer">
+                                <div class="card-footer-row-1">
+                                    <div class="product-info">
+                                        <div class="text-primary">
+                                            <h5 class="text-primary-gc">{{ product.name }}</h5>
+                                            <h4 class="product-price" style="display: none">{{ product.category }}</h4>
+                                            <h6 style="display: none" >{{ product.stock }}</h6>
+{#                                            <h6 class="product-stock" style="display: none">{{ product.stock }}</h6>#}
+                                        </div>
+                                        <div class="text-secondary">
+                                            <h7 class="product-price">{{ product.price }}</h7>
+                                            <h7 class="product-price">RON</h7>
+                                        </div>
+                                    </div>
+{#                                    {% if user.is_authenticated %}#}
+{#                                        <button type="button" class="btn btn-heart" data-product-id="{{ product.id }}">#}
+{#                                            {% if product.is_favorited %}#}
+{#                                                <span class="bi-heart-fill icon-favorite-selected"></span>#}
+{#                                            {% else %}#}
+{#                                                <span class="bi-heart icon-favorite-enabled"></span>#}
+{#                                            {% endif %}#}
+{#                                        </button>#}
+{#                                    {% endif %}#}
+                                    {% if user.is_authenticated %}
+{#                                        <form action="{% url 'toggle_favorite' product.id %}" method="post" >#}
+{#                                            {% csrf_token %}#}
+{#                                            <button type="submit" class="btn btn-heart">#}
+{#                                                {% if product.is_favorited %}#}
+{#                                                    <span class="bi-heart-fill icon-favorite-selected"></span>#}
+{#                                                {% else %}#}
+{#                                                    <span class="bi-heart icon-favorite-enabled"></span>#}
+{#                                                {% endif %}#}
+{#                                            </button>#}
+{#                                        </form>#}
+                                        <form id="favorite-form-{{ product.id }}" class="favorite-form" method="post" data-product-id="{{ product.id }}">
+                                            {% csrf_token %}
+                                            <button type="button" class="btn btn-heart" onclick="toggleFavorite({{ product.id }})">
+                                                {% if product.is_favorited %}
+                                                    <span class="bi-heart-fill icon-favorite-selected" id="icon-{{ product.id }}"></span>
+                                                {% else %}
+                                                    <span class="bi-heart icon-favorite-enabled" id="icon-{{ product.id }}"></span>
+                                                {% endif %}
+                                            </button>
+                                        </form>
+
+                                    {% endif %}
+
+
+                                </div>
+                                <div class="card-footer-row-2">
+                                    {% if product.stock > 0 %}
+
+                                          <button type="button" class="btn btn-primary btn-gc-secondary" id="decrement-btn-{{ product.name }}" style="display: none;" onclick="decrementQuantity('{{ product.name }}', {{ product.price }})">
+                                            <span class="bi-dash gc-text-brand" style="font-size: 24px;"></span>
+                                        </button>
+
+                                         <span id="quantity-{{ product.name }}" style="display: none;">0</span>
+
+                                        <button type="button" class="btn btn-primary btn-gc-secondary" id="increment-btn-{{ product.name }}" onclick="incrementQuantity('{{ product.name }}', '{{ product.price }}', '{{ product.image.url }}', {{ product.stock }})">
+                                            <span class="bi-plus gc-text-brand"></span>
+                                        </button>
+                                    {% else %}
+                                        <button type="button" class="btn out-of-stock" disabled>
+                                            <span class="out-of-stock-text">Stoc epuizat</span>
+                                        </button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+{#///////////////////////////////         Filter scripts          //////////////////////////////////////////////////////////////////////////////#}
+                        <script>
+                            document.addEventListener('DOMContentLoaded', () => {
+
+                                // Ensure search/filter function re-runs when checkboxes are clicked
+                                const searchInput = document.getElementById('myInput');
+                                const checkboxes = document.querySelectorAll('.checkbox');
+                                const favoriteCheckbox = document.getElementById('filtru_favorite');
+
+
+                                // Filtering function
+                                function gc_searchFunction() {
+                                    const input = searchInput.value.toUpperCase();
+                                    const cards = document.getElementsByClassName('card-enabled-gc');
+                                    const selectedCategories = Array.from(document.querySelectorAll('.checkbox:checked'))
+                                                                     .map(cb => cb.value);
+                                    const inStockChecked = selectedCategories.includes("in_stoc");
+                                    const favoriteChecked = favoriteCheckbox.checked;
+                                    const filteredCategories = selectedCategories.filter(category => category !== "in_stoc" && category !== "favorite");
+
+                                    for (let i = 0; i < cards.length; i++) {
+                                        const card = cards[i];
+                                        const txtValue = card.querySelector('h5').textContent.trim().toUpperCase();
+                                        const productCategory = card.querySelector('h4').textContent.trim();
+                                        const productStock = parseInt(card.querySelector('h6').textContent.trim());
+                                        const isFavorited = card.getAttribute('data-favorites') === 'true';
+
+                                        const textMatch = txtValue.includes(input);
+                                        const categoryMatch = filteredCategories.length === 0 || filteredCategories.includes(productCategory);
+                                        const stockMatch = !inStockChecked || (inStockChecked && productStock > 0);
+                                        const favoriteMatch = !favoriteChecked || (favoriteChecked && isFavorited);
+
+                                        if (textMatch && categoryMatch && stockMatch && favoriteMatch) {
+                                            card.style.display = "";
+                                        } else {
+                                            card.style.display = "none";
+                                        }
+                                    }
+
+
+                                     // Save the current filter state
+                                    saveFilterState();
+                                }
+
+                                    // Save filter state to localStorage
+                                    function saveFilterState() {
+                                        const filters = {
+                                            selectedCategories: Array.from(document.querySelectorAll('.checkbox:checked'))
+                                                                      .map(cb => cb.value),
+                                            isFavoriteChecked: favoriteCheckbox.checked,
+                                            searchText: searchInput.value
+                                        };
+                                        localStorage.setItem('filterState', JSON.stringify(filters));
+
+                                    }
+
+
+                                    // Restore filter state
+                                    const savedFilterState = localStorage.getItem('filterState');
+                                    if (savedFilterState) {
+                                        const filters = JSON.parse(savedFilterState);
+
+                                        // Restore checkbox states
+                                        filters.selectedCategories.forEach(category => {
+                                            const checkbox = document.querySelector(`.checkbox[value="${category}"]`);
+                                            if (checkbox) {
+                                                checkbox.checked = true; // Check the checkbox if it's in saved categories
+                                            }
+                                        });
+                                        // Restore favorite checkbox state
+                                        favoriteCheckbox.checked = filters.isFavoriteChecked;
+
+                                        // Restore search input value
+                                        searchInput.value = filters.searchText;
+
+                                        gc_searchFunction();
+        }
+
+
+                                    // Add event listeners to filters
+                                    checkboxes.forEach(checkbox => {
+                                        checkbox.addEventListener('click', gc_searchFunction);
+                                    });
+                                    searchInput.addEventListener('keyup', gc_searchFunction);
+                                    favoriteCheckbox.addEventListener('change', gc_searchFunction);
+                                });
+                        </script>
+
+
+                    {% endfor %}
+                </div>
+            </div>
+
+{#          {# Panel 1 - Comanda ta #}
+            <div class="order-conf-panel">
+                <div class="cart-header">
+                    <div class="cart-title-container">
+                        <h2 class="h2-text title_alone">Comanda ta</h2>
+                    </div>
+                    <p class="title_alone"><a class="login-text" href="{% url 'product_list' %}">Înapoi la magazin</a></p>
+                </div>
+                <div class="cart-divider"></div>
+
+                <!-- Empty state message -->
+                <div id="empty-cart-message" style="display: block;" class="empty-state-container">
+                    <h3 style="display: block;" class="empty-state-message">Adaugă produse în coș.</h3>
+                </div>
+
+                <div class="cart-product-list" id="cart-items"></div>
+            </div>
+
+            {# Panel 2 - Detalii de livrare #}
+            <div class="order-conf-panel">
+                <div class="cart-header">
+                    <div class="cart-title-container">
+                        <h2 class="h2-text title_alone">Detalii de livrare</h2>
+                    </div>
+                </div>
+                <div class="cart-divider"></div>
+                <div class="text-optional-container">
+                    <h2 class="text-optional">Verifică zona de livrare</h2>
+                </div>
+
+                <form class="form-group-container" id="delivery-details">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="delivery_address" placeholder="Adresă" required value="{{ request.user.profile.delivery_address }}">
+                        <span id="addressError" class="error-message" style="color: red; display: none;">Te rog să completezi adresa de livrare.</span>
+                    </div>
+                    <div class="form-group-2">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="delivery_name" placeholder="Nume și prenume" required value="{{ request.user.profile.delivery_name }}">
+                            <span id="nameError" class="error-message" style="color: red; display: none;">Te rog să completezi numele și prenumele.</span>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" class="form-control" id="delivery_phone" placeholder="Număr de telefon" required pattern="\d{10}" inputmode="numeric" maxlength="10" value="{{ request.user.profile.delivery_phone }}">
+                            <span id="phoneError" class="error-message" style="color: red; display: none;">Te rog să completezi numărul de telefon.</span>
+                        </div>
+                    </div>
+                </form>
+                <form class="agreement-form">
+                    <div class="agreement">
+                        <input type="checkbox" class="agreement-checkbox">
+                        <span class="text-optional">Sunt de acord să fiu contactat pentru detalii.</span>
+                    </div>
+                    <div class="agreement">
+                        <input type="checkbox" class="agreement-checkbox" id="save_for_next_order" name="save_for_next_order" {% if request.user.profile.save_for_next_order %}checked{% endif %}>
+                        <span class="text-optional">Salvează adresa de livrare pentru a fi folosită mai tarziu.</span>
+                    </div>
+{#                    <div class="agreement-terms">#}
+{#                        <input type="checkbox" id="agreement-checkbox" class="agreement-checkbox" required>#}
+{#                        <span class="text-terms">#}
+{#                            &nbspSunt de acord cu prelucrarea datelor personale conform&nbsp;#}
+{#                            <a href="{% url 'terms_and_conditions' %}">Politicii de Confidentialitate</a>&nbsp;a magazinului.#}
+{#                        </span>#}
+{#                    </div>#}
+                    <div class="agreement-terms">
+                        <input type="checkbox" id="agreement-checkbox" class="agreement-checkbox" required>
+                        <span class="text-terms">
+                            Sunt de acord cu prelucrarea datelor personale conform
+                            <a href="{% url 'terms_and_conditions' %}">Politicii de Confidentialitate</a> a magazinului.
+                        </span>
+                    </div>
+                    <div id="agreementError" style="color: red; display: none;">Trebuie să acceptați politica de confidențialitate.</div>
+                </form>
+            </div>
+
+            {# Panel 3 - Detalii de facturare #}
+            <div class="order-conf-panel">
+                <div class="cart-header">
+                    <div class="optional_container">
+                        <div class="cart-title-container">
+                            <h2 class="h2-text title_alone">Detalii de facturare</h2>
+                        </div>
+                        <div class="text-optional-container">
+                            <h2 class="text-optional">Opțional</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="cart-divider"></div>
+
+                <form class="form-group-container" id="billing-details">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="billing_address" placeholder="Adresă">
+                    </div>
+                    <div class="form-group-2">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="billing_name" placeholder="Nume și prenume">
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" class="form-control" id="billing_phone" placeholder="Număr de telefon">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            {# Panel 4 - Modalitate de plată #}
+            <div class="order-conf-panel">
+                <div class="cart-header">
+                    <div class="cart-title-container">
+                        <h2 class="h2-text title_alone">Modalitate de plată</h2>
+                    </div>
+                </div>
+                <div class="cart-divider"></div>
+
+                <form class="form-group-container" id="payment-details">
+                    <label class="form-group-2">
+                        <input type="radio" name="payment" value="cash_on_delivery" checked>
+                        <h2 class="text-optional">Numerar sau card la livrare</h2>
+                    </label>
+                    <label class="form-group-2">
+                        <input type="radio" name="payment" value="online_payment" disabled>
+                        <div class="form-group">
+                            <h2 class="text-optional">Online</h2>
+                            <p class="additional-text">Momentan nu suportăm plata online cu cardul</p>
+                        </div>
+                    </label>
+                </form>
+            </div>
+
+{#           {# Panel 5 - Total comanda #}
+            <div class="order-conf-panel">
+                <div class="cart-header">
+                    <div class="cart-title-container">
+                        <h2 class="h2-text">Total comandă</h2>
+                        <div class="cart-price-combo">
+                            <h2 class="cart-price title_alone" id="cart-total">0</h2>
+                            <h2 class="cart-price title_alone">RON</h2>
+                        </div>
+                    </div>
+                    <button id="place-order-btn" type="button" class="gc-cta cart-button" onclick="submitOrder()">Comandă</button>
+{#                    <button id="place-order-btn" type="button" class="gc-cta cart-button" onclick="placeOrder(event)" disabled>Comandă</button>#}
+
+
+{#                    <a href="{% url 'product_list' %}" id="place-order-btn" class="gc-cta cart-button" onclick=submitOrder() disabled>Plasează Comanda</a>#}
+                </div>
+            </div>
+
+            {# Panel 6 - Footer Section #}
+            <footer class="footer">
+            <div class="footer-container">
+                <ul class="footer-links">
+                    <li><a href="{% url 'how_to_buy' %}">Cum cumpar</a></li>
+                    <li><a href="{% url 'delivery_info' %}">Informatii livrare</a></li>
+                    <li><a href="{% url 'terms_and_conditions' %}">Termeni si conditii</a></li>
+                    <li><a href="{% url 'about_us' %}">Despre noi</a></li>
+                    <li><a href="{% url 'payment_methods' %}">Metode de plata</a></li>
+                    <li><a href="{% url 'return_policy' %}">Politica de retur</a></li>
+                    <li><a href="{% url 'confidentiality' %}">Confidentialitate</a></li>
+                </ul>
+            </div>
+        </footer>
+
+        </div>
+    </div>
+
+
+
+
+{#//////////////////        Script for mentaining scroll position on refresh            //////////////////#}
+{#    <script type="text/javascript">#}
+{##}
+{#        // Scroll to the saved position immediately after page load#}
+{#        function setScreen() {#}
+{#            var yScreen = Number(localStorage.getItem("yPos")); // Convert to number#}
+{#            if (yScreen) {#}
+{#                // Instantly scroll to the saved position without animation#}
+{#                window.scrollTo(0, yScreen);#}
+{#            }#}
+{#        }#}
+{##}
+{##}
+{#        function setScroll() {#}
+{#            var yScroll = window.scrollY; // Modern way to get the vertical scroll position#}
+{#            localStorage.setItem("yPos", yScroll);#}
+{#        }#}
+{##}
+{##}
+{#        function clearScreen() {#}
+{#            localStorage.setItem("yPos", 0);#}
+{#            window.scrollTo(0, 0);#}
+{#        }#}
+{##}
+{##}
+        {# Prevents default scroll restoration on reload #}
+{#        if ('scrollRestoration' in history) {#}
+{#            history.scrollRestoration = 'manual';#}
+{#        }#}
+{#        // Wait until the page is fully loaded and rendered, then apply the scroll position#}
+{#        window.addEventListener('load', setScreen);#}
+{#    </script>#}
+
+{#////////////////////            Cart script             ///////////////////////////////////////////#}
+<script>
+    function saveCartToProfile() {
+        if (isLoggedIn) {
+            fetch('/save-cart-to-profile/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken(), // Ensure you send the CSRF token
+                },
+                body: JSON.stringify({ cart: JSON.stringify(cart) }),
+            })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Cart saved to profile successfully');
+                    } else {
+                        console.error('Failed to save cart to profile');
+                    }
+                })
+                .catch(error => console.error('Error saving cart to profile:', error));
+        }
+    }
+
+    // Utility to get the CSRF token from the cookie
+    function getCSRFToken() {
+        const cookieValue = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrftoken='))
+            ?.split('=')[1];
+        return cookieValue;
+    }
+</script>
+
+
+
+    <script>
+    let isLoggedIn = "{{ user.is_authenticated|yesno:'true,false' }}" === 'true';
+    </script>
+    <script>
+        let cart = [];
+        let total = 0;
+
+        // Define the function before incrementQuantity and decrementQuantity
+        function updateProductQuantity(productName) {
+            const existingProduct = cart.find(item => item.productName === productName);
+            const quantitySpan = document.getElementById(`quantity-${productName}`);
+
+            if (existingProduct && existingProduct.quantity > 0) {
+                quantitySpan.textContent = existingProduct.quantity;
+                quantitySpan.style.display = "inline";
+            } else {
+                quantitySpan.textContent = 0;
+                quantitySpan.style.display = "none";
+            }
+        }
+
+        // Function to increment quantity
+        function incrementQuantity(productName, price, imageUrl, stock) {
+            const existingProduct = cart.find(item => item.productName === productName);
+            const quantitySpan = document.getElementById(`quantity-${productName}`);
+            const decrementBtn = document.getElementById(`decrement-btn-${productName}`);
+            const incrementBtn = document.getElementById(`increment-btn-${productName}`);
+
+            // Convert price to a number
+            price = parseFloat(price);
+
+            // If the product already exists in the cart, update its quantity
+            if (existingProduct) {
+                if (existingProduct.quantity < stock) {
+                    existingProduct.quantity += 1;
+                    updateProductQuantity(productName);
+                }
+
+                if (existingProduct.quantity >= stock) {
+                    incrementBtn.disabled = true;
+                }
+            } else {
+                // If the product does not exist, add it to the cart
+                cart.push({ productName, price, imageUrl, quantity: 1, stock });
+                quantitySpan.textContent = 1;
+                quantitySpan.style.display = "inline";
+                decrementBtn.style.display = "inline"; // Show the decrement button
+            }
+
+                if (1 >= stock) {
+                incrementBtn.disabled = true;
+            }
+
+            total += price;
+            updateCart();
+        }
+
+
+        {#// Function to decrement quantity#}
+        {#function decrementQuantity(productName, price) {#}
+        {#    const existingProduct = cart.find(item => item.productName === productName);#}
+        {#    const quantitySpan = document.getElementById(`quantity-${productName}`);#}
+        {#    const decrementBtn = document.getElementById(`decrement-btn-${productName}`);#}
+        {#    const incrementBtn = document.getElementById(`increment-btn-${productName}`);#}
+        {##}
+        {#    // Convert price to a number#}
+        {#    price = parseFloat(price);#}
+        {##}
+        {#    if (existingProduct && existingProduct.quantity > 0) {#}
+        {#        existingProduct.quantity -= 1;#}
+        {#        total -= price;#}
+        {##}
+        {#        // If the quantity drops below stock, re-enable the plus button#}
+        {#        incrementBtn.disabled = false;#}
+        {##}
+        {#        if (existingProduct.quantity === 0) {#}
+        {#            // Remove the product from the cart#}
+        {#            cart = cart.filter(item => item.productName !== productName);#}
+        {#            quantitySpan.style.display = "none"; // Hide quantity when it's 0#}
+        {#            decrementBtn.style.display = "none"; // Hide decrement button when quantity is 0#}
+        {#        }#}
+        {##}
+        {#        updateProductQuantity(productName);#}
+        {#        updateCart();#}
+        {#    }#}
+        {##}
+        {#    // Ensure total doesn't become negative (just a safeguard)#}
+        {#    if (total < 0) {#}
+        {#        total = 0;#}
+        {#    }#}
+
+
+        function decrementQuantity(productName, price) {
+            const existingProduct = cart.find(item => item.productName === productName);
+            const quantitySpan = document.getElementById(`quantity-${productName}`);
+            const decrementBtn = document.getElementById(`decrement-btn-${productName}`);
+            const incrementBtn = document.getElementById(`increment-btn-${productName}`);
+
+            // Convert price to a number
+            price = parseFloat(price);
+
+            if (existingProduct) {
+                // Check if stock is zero and remove the item from the cart immediately
+                if (existingProduct.stock === 0) {
+                    cart = cart.filter(item => item.productName !== productName);
+                    total -= price * existingProduct.quantity; // Adjust total by the full quantity price
+                    quantitySpan.style.display = "none";
+                    decrementBtn.style.display = "none";
+                    alert(`${productName} is out of stock and has been removed from your cart.`);
+                    updateCart(); // Refresh cart display
+
+                    // Update localStorage
+                     localStorage.setItem('cart', JSON.stringify(cart));
+
+                    return; // Exit the function to avoid further processing
+                }
+
+                // If quantity is greater than 1, decrement normally
+                if (existingProduct.quantity > 1) {
+                    existingProduct.quantity -= 1;
+                    total -= price;
+                    incrementBtn.disabled = false; // Re-enable the increment button if needed
+
+                } else {
+                    // If quantity is 1, set quantity to 0 and hide the product
+                    existingProduct.quantity = 0;
+                    total -= price;
+
+                    // Remove the product from the cart array
+                    cart = cart.filter(item => item.productName !== productName);
+
+                    // Hide UI elements related to this product
+                    quantitySpan.style.display = "none";
+                    decrementBtn.style.display = "none";
+                }
+
+                // Update the UI and cart data
+                updateProductQuantity(productName);
+                updateCart();
+
+                // Update localStorage after each change to keep cart synchronized
+                localStorage.setItem('cart', JSON.stringify(cart));
+
+            }
+
+            // Ensure total doesn't become negative (just a safeguard)
+            if (total < 0) {
+                total = 0;
+            }
+        }
+
+
+            document.addEventListener('DOMContentLoaded', () => {
+        const placeOrderBtn = document.getElementById('place-order-btn-list');
+
+        // Function to update the order button state
+        const updateOrderButton = () => {
+            if (cart.length === 0) {
+                placeOrderBtn.classList.add('disabled'); // Add the disabled class
+                placeOrderBtn.setAttribute('href', '#'); // Prevent navigation
+            } else {
+                placeOrderBtn.classList.remove('disabled'); // Remove the disabled class if cart is not empty
+                placeOrderBtn.setAttribute('href', '{% url "order_summary" %}'); // Allow navigation
+            }
+        };
+
+    // Check if the user is logged in and load the cart data
+    if (!isLoggedIn) {
+        // If not logged in, use localStorage to manage the cart
+        const savedCart = localStorage.getItem('cart');
+        cart = savedCart ? JSON.parse(savedCart) : [];
+    } else {
+        // If logged in, fetch the cart from the server
+        fetch('/get-old-cart/')
+            .then(response => response.json())
+            .then(data => {
+                cart = data.cart || []; // Load the cart from the server response
+                updateOrderButton(); // Update the button state after cart is loaded
+                updateCart(); // Update the cart display on the page
+            })
+            .catch(error => console.error('Error fetching old cart:', error));
+    }
+
+    // Update the button state initially
+    updateOrderButton();
+});
+
+
+
+
+             function updateCart() {
+                const cartItems = document.getElementById('cart-items');
+                const cartTotal = document.getElementById('cart-total');
+                const emptyCartMessage = document.getElementById('empty-cart-message');
+                const placeOrderBtn = document.getElementById('place-order-btn');
+
+                cartItems.innerHTML = ''; // Clear the cart display
+                total = 0; // Reset total to zero before recalculating
+
+                if (cart.length === 0) {
+                    emptyCartMessage.style.display = "block";
+                    cartTotal.textContent = '0';
+                    placeOrderBtn.disabled = true;
+                    return;
+                } else {
+                    emptyCartMessage.style.display = "none";
+                    placeOrderBtn.disabled = false;
+                }
+
+                const orderedProducts = cart.map(item => ({
+                    productName: item.productName,
+                    quantity: item.quantity,
+                }));
+
+                fetch('/api/checkBatchStock/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ products: orderedProducts })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        cart.forEach(item => {
+                            const stockData = data.stockInfo.find(stockItem => stockItem.productName === item.productName);
+                            const latestStock = stockData ? stockData.remainingStock : item.stock;
+
+                            const cartProduct = document.createElement('div');
+                            cartProduct.classList.add('cart-product');
+
+                            // Stock message for items with lower stock than quantity
+                            const stockMessageHTML = item.quantity > latestStock
+                                ? `<div class="cart-price-small text-danger stock-badge" style="padding: 4px 20px; margin-right:24px;">${latestStock} bucăți în stoc</div>`
+                                : '';
+
+                            // Display only remove button if stock is zero, otherwise show plus and minus buttons
+                            const buttonGroupHTML = latestStock === 0
+                                ? `<button type="button" class="gc-cta cart-button remove-cta"  onclick="removeFromCart('${item.productName}')">Șterge</button>`
+                                : `
+                                    <button type="button" class="gc-cart" onclick="decrementQuantity('${item.productName}', ${item.price})">
+                                        <span class="bi-dash gc-text-brand"></span>
+                                    </button>
+                                    <button type="button" class="gc-cart" onclick="incrementQuantity('${item.productName}', ${item.price}, '${item.imageUrl}', ${latestStock})"
+                                    ${item.quantity >= latestStock ? 'disabled' : ''}>
+                                        <span class="bi-plus gc-text-cart"></span>
+                                    </button>
+                                `;
+
+                            cartProduct.innerHTML = `
+                                <div class="cart-info-all">
+                                    <div class="cart-quantity-group">
+                                        <h2 class="cart-quantity">${item.quantity}</h2>
+                                        <h2 class="cart-quantity">x</h2>
+                                    </div>
+                                    <img class="cart-image" src="${item.imageUrl}" alt="${item.productName}">
+                                    <div class="cart-info">
+
+                                        <h2 class="cart-quantity-small">${item.productName}</h2>
+                                        <div class="cart-quantity-group-small">
+                                            <h2 class="cart-price-small">${item.price.toFixed(2)}</h2>
+                                            <h2 class="cart-price-small">RON</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="stock-badge-container">
+                                    ${stockMessageHTML}
+                                <div/>
+                                <div class="cart-button-group">
+                                    ${buttonGroupHTML}
+                                </div>
+                            `;
+
+                            cartItems.appendChild(cartProduct);
+                            total += item.price * item.quantity;
+                        });
+
+                        cartTotal.textContent = `${total.toFixed(2)}`;
+
+                        if (isLoggedIn) {
+                            localStorage.setItem('cart', JSON.stringify(cart));
+                            localStorage.setItem('total', total);
+                        }
+                    } else {
+                        alert("Some products have insufficient stock. Please adjust quantities.");
+                    }
+                })
+                .catch(error => {
+                    alert('An error occurred while checking stock.');
+                });
+                saveCartToProfile();
+            }
+
+            function removeFromCart(productName) {
+                cart = cart.filter(item => item.productName !== productName);
+                updateCart();
+
+                if (isLoggedIn) {
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                }
+            }
+
+
+        function displayStockErrorOnCard(productName, remainingStock) {
+            const productCard = document.querySelector(`[data-product-name="${productName}"]`);
+
+            if (productCard) {
+                let stockMessage = productCard.querySelector('.stock-error-message');
+                if (!stockMessage) {
+                    stockMessage = document.createElement('div');
+                    stockMessage.className = 'stock-error-message text-danger';
+                    productCard.appendChild(stockMessage);
+                }
+
+                stockMessage.textContent = remainingStock === 0
+                    ? `Stoc insuficient: acest produs nu mai este disponibil.`
+                    : `Stoc insuficient. Stoc rămas: ${remainingStock}.`;
+            } else {
+                console.warn(`Product card not found for product name: ${productName}`);
+            }
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Check if the user is logged in
+            if (!isLoggedIn) {
+                // Clear localStorage if the user is not logged in
+                localStorage.removeItem('cart');
+                localStorage.removeItem('total');
+                cart = [];  // Reset the cart
+                total = 0;  // Reset the total
+                updateCart();  // Update the cart display (empty state)
+            } else {
+                // If the user is logged in, restore cart data from localStorage
+                const savedCart = localStorage.getItem('cart');
+                const savedTotal = localStorage.getItem('total');
+
+                if (savedCart) {
+                    cart = JSON.parse(savedCart);  // Restore the cart data from localStorage
+                    total = parseFloat(savedTotal);  // Restore the total price
+                    updateCart();  // Update the UI with the restored cart data
+
+                    cart.forEach(item => {
+                        const quantitySpan = document.getElementById(`quantity-${item.productName}`);
+                        const decrementBtn = document.getElementById(`decrement-btn-${item.productName}`);
+                        const incrementBtn = document.getElementById(`increment-btn-${item.productName}`);
+
+                        // Update the quantity span in the product card
+                        quantitySpan.textContent = item.quantity;
+                        quantitySpan.style.display = "inline";
+                        decrementBtn.style.display = "inline"; // Show the decrement button
+
+                        // Disable the increment button if the quantity reaches the stock limit
+                        if (item.quantity >= item.stock) {
+                            incrementBtn.disabled = true;
+                        }
+                    });
+                }
+            }
+
+            const toastEl = document.getElementById('order-toast');
+            const orderPlaced = localStorage.getItem('orderPlaced');
+
+            if (orderPlaced) {
+                const toast = new bootstrap.Toast(toastEl);
+                toast.show();
+
+                // Remove the flag from local storage after showing the toast
+                localStorage.removeItem('orderPlaced');
+            }
+
+            // Add logout button functionality
+            const logoutButton = document.getElementById('logout-form');
+            if (logoutButton) {
+                logoutButton.addEventListener('submit', function (event) {
+                    // Clear localStorage cart data
+                    localStorage.removeItem('cart');
+                    localStorage.removeItem('total');
+                });
+            }
+        });
+
+</script>
+
+
+
+
+{#////////////////////            Favorite script             //////////////#}
+    <script>
+        function toggleFavorite(productId) {
+            const icon = document.getElementById('icon-' + productId);
+            const form = document.getElementById('favorite-form-' + productId);
+            const productCard = form.closest('.card-enabled-gc');  // Find the product card to update the data-favorites attribute
+            const csrftoken = form.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            // Make an AJAX request
+            fetch("{% url 'toggle_favorite' 0 %}".replace('0', productId), {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({}),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Toggle the heart icon based on the response
+                    if (icon.classList.contains('icon-favorite-selected')) {
+                        icon.classList.remove('icon-favorite-selected');
+                        icon.classList.add('icon-favorite-enabled');
+                        icon.classList.replace('bi-heart-fill', 'bi-heart');
+                        // Update data-favorites attribute to 'false'
+                        productCard.setAttribute('data-favorites', 'false');
+                    } else {
+                        icon.classList.remove('icon-favorite-enabled');
+                        icon.classList.add('icon-favorite-selected');
+                        icon.classList.replace('bi-heart', 'bi-heart-fill');
+                        // Update data-favorites attribute to 'true'
+                        productCard.setAttribute('data-favorites', 'true');
+                    }
+
+                    // Check if the "Favorites" filter is active
+                    const favoriteCheckbox = document.getElementById('filtru_favorite');
+                    if (favoriteCheckbox.checked && !data.favorited) {
+                        // If the "Favorites" filter is enabled and the product is unfavorited, hide the card
+                        productCard.style.display = 'none';
+                    }
+
+                    // Reapply the filter to reflect the change in favorite status
+                    gc_searchFunction();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+
+    </script>
+
+
+<script>
+    function validateDeliveryFields() {
+        // Collect delivery fields and error message elements
+        const deliveryAddress = document.getElementById('delivery_address').value.trim();
+        const deliveryName = document.getElementById('delivery_name').value.trim();
+        const deliveryPhone = document.getElementById('delivery_phone').value.trim();
+        const agreementCheckbox = document.getElementById('agreement-checkbox').checked;
+
+        const addressError = document.getElementById('addressError');
+        const nameError = document.getElementById('nameError');
+        const phoneError = document.getElementById('phoneError');
+        const agreementError = document.getElementById('agreementError');
+
+        let isValid = true;
+
+        // Show/hide error messages based on field input
+        if (!deliveryAddress) {
+            addressError.style.display = 'block';
+            isValid = false;
+        } else {
+            addressError.style.display = 'none';
+        }
+
+        if (!deliveryName) {
+            nameError.style.display = 'block';
+            isValid = false;
+        } else {
+            nameError.style.display = 'none';
+        }
+
+        // Check if the phone number is valid
+        if (!deliveryPhone || deliveryPhone.length !== 10) {
+            phoneError.textContent = 'Numărul de telefon trebuie să aibă 10 cifre.';
+            phoneError.style.display = 'block';
+            isValid = false;
+        } else {
+            phoneError.style.display = 'none';
+        }
+
+        // Check if the agreement is valid
+        if (!agreementCheckbox) {
+            agreementError.style.display = 'block';
+            isValid = false;
+        } else {
+            agreementError.style.display = 'none';
+        }
+
+        return isValid;
+    }
+
+    function updateSubmitButtonState() {
+        const submitButton = document.getElementById('place-order-btn');
+        submitButton.disabled = !validateDeliveryFields();
+}
+
+
+    function submitOrder(event) {
+        event.preventDefault();
+
+        // Scroll to the top of the page
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth' // This creates a smooth scrolling effect
+        });
+
+
+        // Check if delivery fields are valid
+        if (!validateDeliveryFields()) {
+            return;
+        }
+
+        // Check if there are items in the cart
+        if (cart.length > 0) {
+            const user_email = "{{ user.email }}";
+
+            // Collect payment method
+            const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+
+            // Collect delivery details
+            const deliveryAddress = document.getElementById('delivery_address').value;
+            const deliveryName = document.getElementById('delivery_name').value;
+            const deliveryPhone = document.getElementById('delivery_phone').value;
+
+            // Collect optional billing details
+            const billingAddress = document.getElementById('billing_address').value;
+            const billingName = document.getElementById('billing_name').value;
+            const billingPhone = document.getElementById('billing_phone').value;
+
+
+            // Collect checkbox value
+            const saveForNextOrder = document.getElementById('save_for_next_order').checked;  // Get the checkbox state
+
+            // Create ordered products data
+            const orderedProducts = cart.map(item => ({
+                productName: item.productName,
+                quantityOrdered: item.quantity,
+                newStock: item.stock - item.quantity
+            }));
+
+            // Prepare order data
+            const orderData = {
+                cart: cart,
+                total: total,
+                user_email: user_email,
+                delivery: {
+                    address: deliveryAddress,
+                    name: deliveryName,
+                    phone: deliveryPhone
+                },
+                billing: {
+                    address: billingAddress,
+                    name: billingName,
+                    phone: billingPhone
+                },
+                payment: paymentMethod, // Include payment method
+                save_for_next_order: saveForNextOrder  // Include checkbox value
+            };
+
+            // Submit order after updating stock
+            fetch('/api/updateStock/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ products: orderedProducts })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // After successful stock update, clear cart
+                    cart = [];
+                    total = 0;
+                    localStorage.removeItem('cart');
+                    localStorage.removeItem('total');
+                    localStorage.setItem('orderPlaced', 'true');
+                    updateCart(); // Clear UI
+
+                    return fetch('/submit-order/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify(orderData)
+                    });
+                } else {
+                    if (data.errors) {
+                        console.log("Errors from backend:", data.errors);
+                        // Loop through each error and display it on the relevant product card
+                        data.errors.forEach(error => {
+                            displayStockErrorOnCard(error.productId, error.remainingStock);
+                        });
+                        showToastMessage(data.errors);
+                        // Disable the "Comanda" button to prevent further attempts
+                        document.getElementById('place-order-btn').disabled = true;
+                        window.updateCart()
+                    } else {
+                        alert('Failed to update stock: ' + data.message);
+                    }
+                }
+            })
+            .then(response => response ? response.json() : null)
+            .then(data => {
+                if (data && data.message) {
+                    localStorage.setItem('orderPlaced', 'true');
+                    window.location.href = "{% url 'product_list' %}";
+                } else if (data && data.error) {
+                    alert('There was an error submitting your order. Please try again.' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while processing your order.' + error.message);
+            });
+        } else {
+            alert('Your cart is empty.');
+        }
+    }
+
+    function displayStockErrorOnCard(productId, remainingStock) {
+        const productCard = document.querySelector(`#product-card-${productId}`);
+        console.log(`Displaying stock error for product ID: ${productId}`, productCard);
+
+        if (productCard) {
+            let stockMessage = productCard.querySelector('.stock-error-message');
+            if (!stockMessage) {
+                stockMessage = document.createElement('div');
+                stockMessage.className = 'stock-error-message text-danger';
+                productCard.appendChild(stockMessage);
+                console.log("Created and appended new stock message element:", stockMessage);
+            } else {
+                console.log("Existing stock message element found:", stockMessage);
+            }
+                
+
+            stockMessage.textContent = remainingStock === 0
+                ? `Stoc insuficient: acest produs nu mai este disponibil.`
+                : `Stoc insuficient. Stoc rămas: ${remainingStock}.`;
+        } else {
+            console.warn(`Product card not found for product ID: ${productId}`);
+        }
+    }
+
+
+    function showToastMessage(errors) {
+    // Construct the toast content with missing stock details
+    const toastBody = "Stoc insuficient pentru anumite produse.";
+
+    // Create the toast element
+    const toastEl = document.createElement('div');
+    toastEl.id = "order-toast";
+    toastEl.className = "toast align-items-center text-white border-0 ";
+    toastEl.role = "alert";
+    toastEl.setAttribute("aria-live", "assertive");
+    toastEl.setAttribute("aria-atomic", "true");
+    toastEl.style = "position: fixed; bottom: 24px; left: 50%; transform: translate(-50%, 0px); z-index: 1050; background-color: #DB3829;";
+
+    // Inner HTML for the toast element
+    toastEl.innerHTML = `
+        <div class="d-flex">
+            <div class="toast-body toast-size">
+                ${toastBody}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" style="margin-left: 30px;" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    `;
+
+    // Append the toast to the body and show it
+    document.body.appendChild(toastEl);
+    const toast = new bootstrap.Toast(toastEl, { autohide: false });
+    toast.show();
+
+    // Remove toast from DOM only when the close button is clicked
+    toastEl.querySelector('.btn-close').addEventListener('click', () => {
+        toast.dispose(); // Manually hide the toast
+        document.body.removeChild(toastEl); // Remove from DOM
+
+        // Enable the "Comanda" button again after the toast is dismissed
+        document.getElementById('place-order-btn').disabled = false;
+    });
+}
+
+    // Attach submitOrder function to the place-order button
+    document.addEventListener('DOMContentLoaded', () => {
+        const placeOrderBtn = document.getElementById('place-order-btn');
+        {#placeOrderBtn.addEventListener('click', submitOrder);#}
+        placeOrderBtn.disabled = true; // Initially disable the button
+
+
+            // Validate fields on input
+    document.getElementById('delivery_address').addEventListener('input', updateSubmitButtonState);
+    document.getElementById('delivery_name').addEventListener('input', updateSubmitButtonState);
+    document.getElementById('delivery_phone').addEventListener('input', updateSubmitButtonState);
+    document.getElementById('agreement-checkbox').addEventListener('change', updateSubmitButtonState);
+
+    placeOrderBtn.addEventListener('click', submitOrder);
+
+    });
+</script>
+
+
+<script>
+    const deliveryPhone = document.getElementById("delivery_phone");
+    const phoneError = document.getElementById("phoneError");
+
+    deliveryPhone.addEventListener("input", function() {
+        // Check for non-numeric characters
+        if (/\D/.test(deliveryPhone.value)) {
+            phoneError.style.display = "block"; // Show error message
+            // Remove non-numeric characters
+            deliveryPhone.value = deliveryPhone.value.replace(/\D/g, '');
+        } else {
+            phoneError.style.display = "none"; // Hide error message
+        }
+    });
+</script>
+
+
+
+{% endblock %}

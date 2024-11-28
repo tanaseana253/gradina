@@ -1,0 +1,46 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Password Reset Complete{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="login-container">
+        <div class="login-left-container">
+        </div>
+        <div class="login-right-container">
+            <div class="login-form-container">
+                <div class="login-form-2">
+                    <form class="login-form-primary" method="POST" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <div class="logo-text-container">
+                            <a href="{% url 'product_list' %}">
+                                <img src="{% static 'images/logo_gradina_craciun.png' %}" alt="Logo">
+                            </a>
+                            <h1 class="h1-text">BĂCĂNIA GRĂDINA CRĂCIUN</h1>
+                        </div>
+                        <h2 class="h2-text">Bine ai venit!</h2>
+                        <div class="text-confirmation">
+                            <p>Contul a fost creat cu succes.</p>
+                            <p>Pentru a continua cumpărăturile, mai întâi autentifică-te.</p>
+                        </div>
+                        <div>
+                            <div>
+                                <div class="login-form-secondary">
+                                    <a href="{% url 'login' %}" class="gc-cta">Autentificare</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="login-footer">
+                    <p><a class="login-text" href="{% url 'product_list' %}">Înapoi la magazin</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

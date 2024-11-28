@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+    <div class="main-container">
+        <div class="main-container-top-above">
+            <div class="main-container-top">
+                <div class="logo-text-container">
+                    <a href="{% url 'product_list' %}">
+                        <img src="{% static 'images/logo_gradina_craciun_white.png' %}" alt="Logo">
+                    </a>
+                    <h1 class="h1-text logo-text">BĂCĂNIA GRĂDINA CRĂCIUN</h1>
+                </div>
+                <div class="sign-in">
+                    {% if request.user.is_authenticated %}
+                         <!-- Dropdown Button -->
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                Salut, {{ request.user.first_name|default:"Salut" }}
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+{#                                <li><a class="dropdown-item" href="#">Profil</a></li>#}
+{#                                <li><a class="dropdown-item" href="#">Istoric comenzi</a></li>#}
+                                <li><a class="dropdown-item" href="{% url 'password_reset' %}">Schimba parola</a></li>
+                                <li>
+                                    <form id="logout-form" method="post" action="{% url 'logout' %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item" style="background:none; border:none; color:black; cursor:pointer;">
+                                            Ieși din cont
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a class="signin-button" href="{% url 'login' %}" role="button">Autentificare</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {# Panel 2 - Informatii livrare#}
+        <div  class="order-conf-panel3">
+            <section class="order-conf-panel2">
+            <h2 class="text-optional" style="font-weight: bold">Informatii de livrare</h2>
+            <p class="text-optional">
+                <span class="text-optional span" style="flex-wrap: wrap">La Grădina Crăciun, prioritatea noastră este să producem legume și fructe sănătoase,
+                    proaspete și cu gustul inconfundabil al celor din grădina bunicilor. De aceea, acordăm o atenție deosebită fiecărei
+                    etape din procesul de cultivare, de la sămânță până la recoltare. Pentru a asigura prospețimea și calitatea superioară
+                    a produselor noastre, livrarea este efectuată exclusiv de echipa noastră.</span>
+                <span>Comenzile plasate pe site-ul nostru, gradinacraciun.ro, sunt procesate și livrate în termen de  <strong> &nbsp; 2-5 zile lucrătoare. </strong>
+                    Ne străduim să vă aducem produsele proaspete și de cea mai bună calitate direct din fermă pe masa dumneavoastră cât
+                    mai repede posibil.</span>
+                <span>Deoarece ne dedicăm în primul rând producției, uneori pot apărea întârzieri minore, mai ales în perioadele aglomerate
+                    sau în condiții meteorologice nefavorabile. Cu toate acestea, vă asigurăm că facem tot posibilul pentru a respecta
+                    termenele de livrare și pentru a vă informa prompt despre orice eventuale modificări.</span>
+                <span>Mulțumirea și satisfacția clienților noștri sunt deosebit de importante pentru noi. De aceea, ne angajăm să comunicăm
+                    deschis și transparent cu dumneavoastră și să oferim soluții rapide pentru orice problemă legată de livrare.</span>
+                <span>Vă mulțumim pentru înțelegere și pentru că alegeți Grădina Crăciun. Suntem recunoscători pentru încrederea acordată
+                    și vă asigurăm că veți primi produse proaspete și sănătoase, cultivate cu grijă și respect pentru natură.</span>
+                <span>Pentru orice întrebări sau informații suplimentare legate de comenzi și livrări, vă rugăm să ne contactați la
+                    comenzi@gradinacraciun.ro sau la 0758233155.</span><br>
+                <span>
+                    <strong>Zone de Livrare</strong>
+                </span><br>
+                <span>În prezent, efectuăm livrări în următoarele zone si limitrofe acestora:</span>
+                <span class="text-green text-centered">
+                    <strong>Tamași - Corbeanca - Ostratu - Petrești - Otopeni - Mogoșoaia - Chitila - Buftea - Crevedia - Sămușcași - Dârza si București - Zona de Nord </strong>
+                </span>
+                <span>
+                    Vă mulțumim pentru înțelegere și vă asigurăm că lucrăm din greu pentru a extinde serviciile noastre de livrare.
+                    Dacă aveți întrebări sau doriți informații suplimentare, nu ezitați să ne contactați. Ne dorim să vă aducem bucuria
+                    și gustul autentic al produselor noastre proaspete, direct pe masa dumneavoastră!
+                </span>
+            </p>
+            <img src="{% static 'images/harta-livrare-1809.jpg' %}" alt="Harta de livrare">
+        </section>
+        </div>
+<!-- Footer Section -->
+        <footer class="footer">
+            <div class="footer-container">
+                <ul class="footer-links">
+                    <li><a href="{% url 'how_to_buy' %}">Cum cumpar</a></li>
+                    <li><a href="{% url 'delivery_info' %}">Informatii livrare</a></li>
+                    <li><a href="{% url 'terms_and_conditions' %}">Termeni si conditii</a></li>
+                    <li><a href="{% url 'about_us' %}">Despre noi</a></li>
+                    <li><a href="{% url 'payment_methods' %}">Metode de plata</a></li>
+                    <li><a href="{% url 'return_policy' %}">Politica de retur</a></li>
+                    <li><a href="{% url 'confidentiality' %}">Confidentialitate</a></li>
+                </ul>
+            </div>
+        </footer>
+    </div>
+
+
+{% endblock %}
