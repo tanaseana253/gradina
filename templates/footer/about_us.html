@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+    <div class="main-container">
+        <div class="main-container-top-above">
+            <div class="main-container-top">
+                <div class="logo-text-container">
+                    <a href="{% url 'product_list' %}">
+                        <img src="{% static 'images/logo_gradina_craciun_white.png' %}" alt="Logo">
+                    </a>
+                    <h1 class="h1-text logo-text">BĂCĂNIA GRĂDINA CRĂCIUN</h1>
+                </div>
+                <div class="sign-in">
+                    {% if request.user.is_authenticated %}
+                         <!-- Dropdown Button -->
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                Salut, {{ request.user.first_name|default:"Salut" }}
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+{#                                <li><a class="dropdown-item" href="#">Profil</a></li>#}
+{#                                <li><a class="dropdown-item" href="#">Istoric comenzi</a></li>#}
+                                <li><a class="dropdown-item" href="{% url 'password_reset' %}">Schimba parola</a></li>
+                                <li>
+                                    <form id="logout-form" method="post" action="{% url 'logout' %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item" style="background:none; border:none; color:black; cursor:pointer;">
+                                            Ieși din cont
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a class="signin-button" href="{% url 'login' %}" role="button">Autentificare</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {# Panel 4 - Despre noi #}
+        <div  class="order-conf-panel3">
+            <section class="order-conf-panel2" >
+                <h2 class="text-title">Povestea Noastră</h2>
+                <p class="text-optional">
+                    <span> Bună! <br>
+                        Sunt <strong>Mihai</strong> și reprezint Grădina Crăciun, ferma noastră unde producem legume și fructe cu gustul
+                           inconfundabil al celor din grădina bunicilor. Cel mai scurt drum al legumelor: <strong class="text-orange">din fermă direct pe masa ta!
+                            Întotdeauna proaspăt!</strong> </span>
+                    <span class="text-optional span"> Povestea noastră a început din dorința de a produce hrană sănătoasă pentru noi și familia noastră.
+                           Astfel, am început să cultivăm fructe și legume, activitate care s-a dezvoltat organic, transformându-se
+                           astăzi într-o mică afacere de familie, unde temelia a fost pasiunea, seriozitatea și priceperea. </span>
+                    <span> În 2011, am fondat societatea comercială <strong>AGROSER MAC SRL</strong>, dedicată inițial creșterii legumelor în
+                           spații protejate. În timp, ne-am dezvoltat, și astăzi avem o livadă de cireși și un magazin propriu
+                           unde desfacem produsele noastre, precum și ale altor producători similari.</span>
+                    <span> Cultivăm o suprafață de aproximativ 9000 mp. <strong class="text-green">Toate legumele și fructele noastre sunt proaspete, sănătoase
+                        și 100% organice, crescute fără chimicale.</strong></span>
+                    <span> Suprafața protejată este echipată, în sezonul cald, cu plase de umbrire și plase împotriva insectelor
+                           pentru a proteja plantele și a crea un microclimat benefic pentru dezvoltarea lor. Soiurile cultivate
+                           cu pricepere includ diverse feluri de roșii, ardei gras, ardei kapia, castraveți, vinete, dovlecei,
+                           ardei iute, salată, spanac, ceapă, ridichi, fasole și multe altele. </span>
+                    <span> Pentru a obține calitatea și gustul autentic și pentru a vă oferi cele mai bune legume, utilizăm
+                           îngrășământ natural, în principal gunoi de grajd macerat de la microferma noastră de păsări.
+                           Polenizarea, atât în solarii, cât și în grădină și livadă, o realizăm cu ajutorul bondarilor.
+                           Solariile sunt protejate împotriva dăunătorilor cu plase și metode ecologice de combatere a dăunătorilor
+                           și bolilor, cum ar fi benzi capcane cu feromoni și lămpi UV. Irigarea prin picurare asigură că plantele
+                           primesc exact cantitatea necesară de apă pentru o dezvoltare naturală. </span>
+                    <span> De la primul fir de roșie plantat și până astăzi, drumul nostru a fost presărat cu bune și rele,
+                           conducându-ne către realizarea unor noi proiecte complementare activității de bază, toate dragi nouă. </span>
+                    <span> Magazinul propriu, <strong class="text-green"> Băcănia Grădina Crăciun</strong>, este un spațiu unde desfacem producția noastră,
+                           dar și produse provenite de la alți producători autohtoni.</span>
+                    <span> În spațiul destinat producției de conserve de legume și fructe, producem artizanal diverse conserve
+                           din materia primă provenită din ferma noastră, precum suc de roșii, pastă de roșii, pastă de ardei kapia,
+                           castraveți murați, zacuscă de vinete și multe altele.</span>
+                    <span> Fiecare legumă și fructă pe care o producem reflectă angajamentul nostru față de calitate și sustenabilitate.
+                           An de an, reușim să aducem pe masa voastră cele mai gustoase și sănătoase roade. Gustul deosebit al produselor
+                           noastre este apreciat de clienți, iar feedback-ul lor ne motivează să devenim din ce în ce mai buni.
+                           Satisfacția unui client mulțumit este mai presus de orice, iar faptul că oamenii revin ne oferă o mare bucurie
+                        și certitudinea că munca noastră este bine făcută. </span>
+                    <span class="text-green">
+                        <strong>Suntem recunoscători tuturor celor care au avut încredere în noi! Vă așteptăm cu drag în băcănia noastră
+                            să ne cunoaștem!</strong>
+                    </span>
+                </p>
+            </section>
+        </div>
+
+            <!-- Footer Section -->
+        <footer class="footer">
+            <div class="footer-container">
+                <ul class="footer-links">
+                    <li><a href="{% url 'how_to_buy' %}">Cum cumpar</a></li>
+                    <li><a href="{% url 'delivery_info' %}">Informatii livrare</a></li>
+                    <li><a href="{% url 'terms_and_conditions' %}">Termeni si conditii</a></li>
+                    <li><a href="{% url 'about_us' %}">Despre noi</a></li>
+                    <li><a href="{% url 'payment_methods' %}">Metode de plata</a></li>
+                    <li><a href="{% url 'return_policy' %}">Politica de retur</a></li>
+                    <li><a href="{% url 'confidentiality' %}">Confidentialitate</a></li>
+                </ul>
+            </div>
+        </footer>
+
+    </div>
+
+
+{% endblock %}

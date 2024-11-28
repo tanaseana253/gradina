@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+    <div class="main-container">
+        <div class="main-container-top-above">
+            <div class="main-container-top">
+                <div class="logo-text-container">
+                    <a href="{% url 'product_list' %}">
+                        <img src="{% static 'images/logo_gradina_craciun_white.png' %}" alt="Logo">
+                    </a>
+                    <h1 class="h1-text logo-text">BĂCĂNIA GRĂDINA CRĂCIUN</h1>
+                </div>
+                <div class="sign-in">
+                    {% if request.user.is_authenticated %}
+                         <!-- Dropdown Button -->
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                Salut, {{ request.user.first_name|default:"Salut" }}
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+{#                                <li><a class="dropdown-item" href="#">Profil</a></li>#}
+{#                                <li><a class="dropdown-item" href="#">Istoric comenzi</a></li>#}
+                                <li><a class="dropdown-item" href="{% url 'password_reset' %}">Schimba parola</a></li>
+                                <li>
+                                    <form id="logout-form" method="post" action="{% url 'logout' %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item" style="background:none; border:none; color:black; cursor:pointer;">
+                                            Ieși din cont
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a class="signin-button" href="{% url 'login' %}" role="button">Autentificare</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+            {# Panel 3 - Termeni si Conditii#}
+        <div  class="order-conf-panel3">
+            <section class="order-conf-panel2" id="termeni-conditii">
+                <h2 class="text-optional">Termeni și condiții</h2>
+                <p class="text-optional">
+                    <span class="text-optional span">
+                        Folosirea acestui site implica acceptarea termenilor si conditiilor de mai jos. Recomandam citirea cu atentie a
+                        acestora. <strong class="text-green"> www.gradinacraciun.ro</strong> isi asuma dreptul de a modifica aceste prevederi fara o alta notificare.
+                        Cea mai recenta versiune poate fi accesata in aceasta pagina.
+                    </span>
+                    <span>
+                        Accesul/vizitarea acestui website de catre dumneavoastra se supune Termenilor si conditiilor de utilizare, si
+                        implica acceptul explicit al dumneavoastra cu privire la acestea si reprezinta intelegerea dintre parti.
+                    </span>
+                    <span>
+                        Relatia dintre parti este guvernata de urmatoarele acte normative:
+                    </span>
+                    <span>
+                        <ul>
+                            <li>
+                                OG nr. 21/1992 privind protectia consumatorilor
+                            </li>
+                            <li>
+                                OUG nr. 34/2014 privind drepturile consumatorilor in cadrul contractelor incheiate cu profesionistii
+                            </li>
+                            <li>
+                                Legea nr. 363/2007 privind combaterea practicilor incorecte ale comerciantilor in relatia cu consumatorii si
+                                armonizarea reglementarilor cu legislatia europeana privind protectia consumatorilor
+                            </li>
+                            <li>
+                                Legea 365/2002 privind comertul electronic
+                            </li>
+                        </ul>
+                    </span>
+                    <span>
+                        <strong>SC AGROSER MAC SRL</strong> garanteaza utilizatorului acces limitat, in interes personal (efectuarea
+                        de comenzi online, informare), pe site-ul www.gradinacraciun.ro si nu ii confera dreptul de a descarca sau de a
+                        modifica partial sau integral site-ul, de a reproduce partial sau integral site-ul, de a copia, de a vinde/revinde
+                        sau de a exploata site-ul in orice alta maniera, in scopuri comerciale sau fara acordul prealabil scris al acesteia.
+                    </span>
+                    <span>
+                        Intregul continut al site-ului <strong class="text-green">www.gradinacraciun.ro</strong> - imagini, texte, grafice, simboluri, elemente de grafica web,
+                        email-uri, scripturi, programe si alte date - este proprietatea <strong>SC AGROSER MAC SRL</strong> si a furnizorilor sai si este
+                        aparat de Legea pentru protectia drepturilor de autor (legea nr. 8/1996) si de legile privind proprietatea
+                        intelectuala si industriala. Folosirea fara acordul <strong>SC AGROSER MAC SRL</strong> a oricaror elemente enumerate mai sus se
+                        pedepseste conform legislatiei in vigoare.
+                    </span>
+                    <span>
+                        Domeniul <strong class="text-green">www.gradinacraciun.ro</strong> este detinut de catre <strong>SC AGROSER MAC SRL.</strong> Utilizarea acestei marci, a domeniului
+                        sau a numelor de comercializare, siglelor si emblemelor, in forma directa sau "ascunsa" (de tipul, dar nu limitat
+                        la, meta taguri sau alte tehnici de indexare, cautare web) fara permisiunea prealabila scrisa este interzisa si
+                        se pedepseste conform legii.
+                    </span>
+                    <span>
+                        Produsele prezentate pe <strong class="text-green">www.gradinacraciun.ro</strong> sunt produse si comercializare de
+                        <strong>SC AGROSER MAC SRL.</strong> Preturile produselor pot fi schimbate oricand. Verificati pretul final de vanzare inainte de a achizitiona un produs.
+                    </span>
+                </p>
+            </section>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-container">
+                <ul class="footer-links">
+                    <li><a href="{% url 'how_to_buy' %}">Cum cumpar</a></li>
+                    <li><a href="{% url 'delivery_info' %}">Informatii livrare</a></li>
+                    <li><a href="{% url 'terms_and_conditions' %}">Termeni si conditii</a></li>
+                    <li><a href="{% url 'about_us' %}">Despre noi</a></li>
+                    <li><a href="{% url 'payment_methods' %}">Metode de plata</a></li>
+                    <li><a href="{% url 'return_policy' %}">Politica de retur</a></li>
+                    <li><a href="{% url 'confidentiality' %}">Confidentialitate</a></li>
+                </ul>
+            </div>
+            </footer>
+
+    </div>
+
+
+{% endblock %}
