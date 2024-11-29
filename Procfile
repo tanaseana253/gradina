@@ -1,1 +1,1 @@
-web: gunicorn gradinaCraciun.wsgi --log-file -
+web: gunicorn gradinaCraciun.wsgi:application --log-file -
