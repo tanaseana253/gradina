@@ -8,11 +8,12 @@
             <div class="main-container-top">
                 <div class="logo-text-container">
                     <a href="{% url 'product_list' %}">
-                        <img src="{% static 'images/logo_gradina_craciun_white.png' %}" alt="Logo">
+                        <img class="gc-header-logo" src="{% static 'images/logo_gradina_craciun_white.png' %}" alt="Logo">
                     </a>
                     <h1 class="h1-text logo-text">BĂCĂNIA GRĂDINA CRĂCIUN</h1>
                 </div>
-                <div class="sign-in">
+                <!-- Desktop Menu -->
+                <div class="sign-in d-none d-md-flex">
                     {% if request.user.is_authenticated %}
                          <!-- Dropdown Button -->
                         <div class="dropdown">
@@ -38,11 +39,34 @@
                 </div>
             </div>
         </div>
+        <!-- Mobile Hamburger Menu -->
+        <div class="mobile-menu d-md-none">
+                <button class="hamburger-btn" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavbarMenu" aria-expanded="false" aria-controls="mobileNavbarMenu">
+                    ☰
+                </button>
+                <div class="collapse" id="mobileNavbarMenu">
+                    {% if request.user.is_authenticated %}
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'password_reset' %}">Schimba parola</a>
+                        </li>
+                        <li class="nav-item">
+                            <form id="logout-form" method="post" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="nav-link btn-link">Ieși din cont</button>
+                            </form>
+                        </li>
+                    </ul>
+                    {% else %}
+                    <a class="signin-button nav-link" href="{% url 'login' %}" role="button">Autentificare</a>
+                    {% endif %}
+                </div>
+            </div>
 
         <div class="content-area">
             <div class="content-container">
                 <div id="toast-container">
-                    <div id="delivery-toast" class="toast align-items-center bg-success text-white border-0 maintoast" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div id="delivery-toast" class="toast align-items-center bg-success text-white border-0 maintoast gc-toast-height" role="alert" aria-live="assertive" aria-atomic="true">
                       <div class="d-flex">
                         <div class="toast-body">
                             <a href="{% url 'delivery_info' %}" class="toast-link">
@@ -567,6 +591,14 @@ let isLoggedIn = "{{ user.is_authenticated|yesno:'true,false' }}" === 'true';
 
         return mergedCart;
 }
+
+    function updateMobileCartTotal(total) {
+    const orderButton = document.getElementById("place-order-btn-list");
+    orderButton.setAttribute("data-total", total);
+}
+
+    // Example usage (replace 123 with your dynamic total value):
+    updateMobileCartTotal(123);
 
 
 

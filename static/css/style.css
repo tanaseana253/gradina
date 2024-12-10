@@ -382,10 +382,7 @@ button:disabled{
     align-items: center;
     width: 100%; /* Ensure it takes full width */
     height: 72px;
-    padding-top: 0;
-    padding-bottom: 0;
-    padding-left: 48px;
-    padding-right: 48px;
+    padding: 0 48px;
 
 }
 
@@ -441,6 +438,7 @@ button:disabled{
     width: 284px;
     height: 40px;
     border-radius: 20px;
+    background-color: white;
     /*margin-left: 24px;*/
     /*margin-right: 24px;*/
 
@@ -1382,14 +1380,16 @@ input[type="radio"] {
     display: flex;
     justify-content: center; /* Centers the toast within the container */
     margin-bottom: 10px; /* Space below the toast */
+    height: auto; !important;
+    max-height: none;!important;
 }
 
 #delivery-toast {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 40px;
-    padding: 10px; /* Adds space around the text */
+    height: auto;
+    padding: 0px 10px; /* Adds space around the text */
     overflow: hidden; /* Ensures that content doesn't overflow */
     white-space: nowrap; /* Keeps the entire toast message on one line */
 }
@@ -1398,9 +1398,10 @@ input[type="radio"] {
 .toast-body {
     display: flex;
     align-items: center;
-    overflow: hidden; /* Prevents text from overflowing */
-    white-space: nowrap; /* Keeps text on one line */
-    text-overflow: ellipsis; /* Shows ellipsis if text overflows */
+    overflow: auto; /* Prevents text from overflowing */
+    width: 100%;
+    /*white-space: nowrap; !* Keeps text on one line *!*/
+    /*text-overflow: ellipsis; !* Shows ellipsis if text overflows *!*/
 }
 .maintoast{
     width: auto;
@@ -1411,7 +1412,22 @@ input[type="radio"] {
 .toast-link {
     color: inherit; /* Matches the toast text color */
     text-decoration: none; /* Removes underline */
-    display: inline-block; /* Makes the link cover the entire text */
+    display: inline-block;
+    width: 100%;
+    white-space: normal; /* Allow line breaks */
+    word-break: break-word; /* Break long words */
+    word-wrap: break-word; /* Break long words to wrap */
+    overflow-wrap: break-word; /* Ensures text wraps properly */
+    text-align: center;
+}
+
+.d-flex{
+    width: 100%;
+}
+
+.gc-toast-height{
+    height: auto; !important;
+    max-height: none; !important;
 }
 
 .stock-error-message {
@@ -1421,5 +1437,163 @@ input[type="radio"] {
 }
 .toast-size {
     width: auto; !important;
+    height: auto; !important;
 }
 
+/* Mobile styles: Hide the desktop menu and show the hamburger menu */
+@media (max-width: 830px) {
+    .sign-in {
+        display: none; /* Hide desktop menu */
+    }
+    .mobile-menu {
+        display: block;
+    }
+    .h1-text.logo-text {
+        font-size: 10px; /* Adjust text size for mobile */
+        line-height: 1.2; /* Optional: Maintain proportional line height */
+    }
+    .main-container-top-above {
+        padding: 0 !important; /* Remove padding on mobile */
+        margin-bottom: -72px;
+        height: 144px; /* Allow height to adjust based on content */
+    }
+
+    .logo-text-container {
+        display: flex;
+        justify-content: center; /* Horizontally center the content */
+        align-items: center; /* Vertically align the logo and text */
+        width: 100%; /* Make it fill the container */
+        text-align: center; /* Center text */
+        gap: 8px; /* Add some space between the logo and text */
+    }
+    .logo-text-container img {
+        max-width: 100%; /* Make logo responsive */
+        height: auto; /* Maintain aspect ratio */
+        width: auto; /* Ensure logo width doesn't grow beyond container */
+    }
+
+    .h1-text.logo-text {
+        font-size: 16px; /* Adjust the text size for mobile */
+        line-height: 1.2;
+    }
+
+    .shopping-cart-container{
+        display: none;
+    }
+
+    .content-area{
+        padding: 0;
+    }
+
+    .content-container{
+        border-radius: 0;
+        background-color: #FAF8F5;
+        padding: 24px 16px 16px;
+    }
+
+    .search_bar{
+        width: 100%;
+    }
+
+    .filter-button{
+        padding: 6px 18px;
+        height: auto;
+        border-radius: 100px;
+    }
+
+    #toast-container{
+        width: 100%;
+        height: auto;
+    }
+    .main-container-top{
+        padding-left: 16px;
+        padding-right: 16px;
+        height: 56px;
+    }
+    .logo-text-container{
+        justify-content: left;
+    }
+    .main-container-top-above{
+        margin-bottom: -88px;
+    }
+    .product-container{
+        display: grid;
+        grid-template-columns: repeat(2,1fr);
+        /*gap: 8px; !* Space between product cards *!*/
+        column-gap: 8px;
+        row-gap: 24px;
+    }
+
+    .card-enabled-gc {
+        width: auto;
+        min-width: 164px;
+        height: 280px;
+    }
+    .card-img-product{
+        height: 100%;
+    }
+    .card-image-container{
+        height: 132px;
+    }
+    .card-footer{
+        height: 146px;
+        padding: 16px;
+        margin: 0;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+    .card-footer-row-1{
+        height: 60px;
+        align-items: flex-start;
+        column-gap: 4px;
+    }
+    .text-primary{
+        height: auto;
+        max-height: 40px;
+    }
+    .text-primary-gc{
+        white-space: normal;
+        line-height: 20px;
+    }
+    .product-info{
+        gap: 4px;
+    }
+
+}
+
+.hamburger-btn {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: white;
+    position: absolute;       /* Position the button absolutely */
+    top: 6px;                /* Set distance from the top */
+    right: 10px;
+}
+
+.collapse {
+    display: none;
+}
+
+.collapse.show {
+    display: block;
+}
+
+/* Position the mobile dropdown to the right */
+#mobileNavbarMenu {
+    position: absolute;       /* Take the menu out of the normal flow */
+    top: 50px;                /* Position it below the hamburger button */
+    right: 10px;              /* Align it with the right edge of the screen */
+    background-color: white;  /* Background for visibility */
+    border-radius: 5px;       /* Optional: Add rounded corners */
+    z-index: 1000;            /* Ensure it appears above other elements */
+    padding: 10px;            /* Add some padding inside */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
+    text-align: right;        /* Align text to the right */
+}
+
+
+#mobileNavbarMenu .nav-link {
+    color: black; /* Text color for dropdown items */
+    text-align: right; /* Align dropdown items to the right */
+}
