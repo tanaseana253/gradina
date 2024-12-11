@@ -4,6 +4,12 @@
 
 {% block content %}
     <div class="main-container">
+        <!-- Mobile cart total button -->
+        <div class="mobile-cart-wrapper">
+            <a href="{% url 'order_summary' %}" id="mobile-cart-btn" class="gc-cta cart-button mobile-cart-button">
+                Coșul tău •&nbsp;<span id="mobile-cart-total">0</span>&nbsp;RON
+            </a>
+        </div>
         <div class="main-container-top-above">
             <div class="main-container-top">
                 <div class="logo-text-container">
@@ -292,13 +298,13 @@
         <footer class="footer">
             <div class="footer-container">
                 <ul class="footer-links">
-                    <li><a href="{% url 'how_to_buy' %}">Cum cumpar</a></li>
-                    <li><a href="{% url 'delivery_info' %}">Informatii livrare</a></li>
-                    <li><a href="{% url 'terms_and_conditions' %}">Termeni si conditii</a></li>
-                    <li><a href="{% url 'about_us' %}">Despre noi</a></li>
-                    <li><a href="{% url 'payment_methods' %}">Metode de plata</a></li>
-                    <li><a href="{% url 'return_policy' %}">Politica de retur</a></li>
-                    <li><a href="{% url 'confidentiality' %}">Confidentialitate</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'how_to_buy' %}">Cum cumpar</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'delivery_info' %}">Informatii livrare</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'terms_and_conditions' %}">Termeni si conditii</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'about_us' %}">Despre noi</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'payment_methods' %}">Metode de plata</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'return_policy' %}">Politica de retur</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'confidentiality' %}">Confidentialitate</a></li>
                 </ul>
             </div>
         </footer>
@@ -490,6 +496,7 @@ let isLoggedIn = "{{ user.is_authenticated|yesno:'true,false' }}" === 'true';
         const cartTotal = document.getElementById('cart-total');
         const emptyCartMessage = document.getElementById('empty-cart-message');
         const placeOrderBtn = document.getElementById('place-order-btn-list'); // Get the order button
+        const mobileCartTotal = document.getElementById('mobile-cart-total');
 
 
         cartItems.innerHTML = ''; // Clear the cart display
@@ -547,7 +554,8 @@ let isLoggedIn = "{{ user.is_authenticated|yesno:'true,false' }}" === 'true';
             cartItems.appendChild(cartProduct);
         });
 
-        cartTotal.textContent = total.toFixed(2);
+        cartTotal.textContent = total.toFixed(2); // Desktop
+        mobileCartTotal.textContent = total.toFixed(2); // Mobile
 
         // Only store the cart in localStorage if the user is logged in
         localStorage.setItem('cart', JSON.stringify(cart));  // Save cart data as a JSON string
