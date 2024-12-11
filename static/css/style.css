@@ -1575,6 +1575,15 @@ input[type="radio"] {
         margin-bottom:24px;
         text-align: center;
     }
+    .card-img-product{
+    height: auto;
+    width: 100%;
+    flex-shrink: 0;
+    align-self: auto;
+    background: lightgray 50% / cover no-repeat;
+    pointer-events: none;
+    user-select: none;
+}
 
 }
 
