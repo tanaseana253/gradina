@@ -1576,14 +1576,15 @@ input[type="radio"] {
         text-align: center;
     }
     .card-img-product{
-    height: auto;
+    height: 100%; /* Match parent container height */
     width: 100%;
+    object-fit: cover; /* Scale and crop proportionally */
     flex-shrink: 0;
     align-self: auto;
     background: lightgray 50% / cover no-repeat;
     pointer-events: none;
     user-select: none;
-}
+    }
 
 }
 
