@@ -1287,6 +1287,12 @@ input[type="radio"] {
     color: #777777 !important; /* Optional for a disabled look */
     background-color: #e0e0e0 !important; /* Optional for a disabled look */
 }
+#mobile-cart-btn.disabled {
+    pointer-events: none !important;
+    opacity: 0.5 !important;
+    color: #777777 !important; /* Optional for a disabled look */
+    background-color: #e0e0e0 !important; /* Optional for a disabled look */
+}
 
 
 .disabled {
