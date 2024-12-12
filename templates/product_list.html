@@ -495,8 +495,9 @@ let isLoggedIn = "{{ user.is_authenticated|yesno:'true,false' }}" === 'true';
         const cartItems = document.getElementById('cart-items');
         const cartTotal = document.getElementById('cart-total');
         const emptyCartMessage = document.getElementById('empty-cart-message');
-        const placeOrderBtn = document.getElementById('place-order-btn-list'); // Get the order button
-        const mobileCartTotal = document.getElementById('mobile-cart-total');
+        const placeOrderBtn = document.getElementById('place-order-btn-list'); // // Desktop cart button
+        const mobileCartTotal = document.getElementById('mobile-cart`-total');
+        const mobileCartBtn = document.getElementById('mobile-cart-btn'); // Mobile cart button
 
 
         cartItems.innerHTML = ''; // Clear the cart display
@@ -505,8 +506,14 @@ let isLoggedIn = "{{ user.is_authenticated|yesno:'true,false' }}" === 'true';
             emptyCartMessage.style.display = "block";  // Show empty cart message
             cartTotal.textContent = '0.00';  // Reset total to 0
             total = 0;  // Make sure total is reset to 0
+
+            // Disable desktop order button
             placeOrderBtn.classList.add('disabled'); // Add the disabled class
             placeOrderBtn.setAttribute('href', '#'); // Prevent navigation
+
+            // Disable mobile cart button
+            mobileCartBtn.classList.add('disabled');
+            mobileCartBtn.setAttribute('href', '#');
 
             // Clear cart data from localStorage
             localStorage.removeItem('cart');
@@ -516,8 +523,14 @@ let isLoggedIn = "{{ user.is_authenticated|yesno:'true,false' }}" === 'true';
             return;  // Exit the function early
         } else {
             emptyCartMessage.style.display = "none";  // Hide empty cart message
+
+            // Enable desktop order button
             placeOrderBtn.classList.remove('disabled'); // Remove the disabled class
             placeOrderBtn.setAttribute('href', '{% url "order_summary" %}'); // Allow navigation
+
+            // Enable mobile cart button
+            mobileCartBtn.classList.remove('disabled');
+            mobileCartBtn.setAttribute('href', '{% url "order_summary" %}');
             }
 
         // Iterate through the cart and display each product in a card
