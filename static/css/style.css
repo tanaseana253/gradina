@@ -32,13 +32,6 @@
 
 }
 
-/*button:disabled{*/
-/*    background-color: red !important;*/
-/*    color:green;*/
-/*    cursor:not-allowed;*/
-/*}*/
-
-
 .card-selected-gc {
     display: flex;
     width: 240px;
@@ -383,7 +376,13 @@ button:disabled{
     width: 100%; /* Ensure it takes full width */
     height: 72px;
     padding: 0 48px;
+}
 
+.agreement-top{
+    max-width: 1024px;
+    margin: 0 auto; /* Center horizontally */
+    padding: 0 16px; /* Optional: Adjust padding for smaller screens */
+    box-sizing: border-box; /* Include padding in the width */
 }
 
 .main-container-top-above{
@@ -1174,6 +1173,10 @@ button:disabled{
     gap:4px;
 }
 
+.agreement-text{
+    font-size: 14px;
+}
+
 .asterisk{
     color: red;
     margin-right: 2px ;
@@ -1300,6 +1303,8 @@ input[type="radio"] {
 .footer-links {
     list-style: none; /* Remove bullet points */
     padding: 0;
+    margin-right: 16px;
+    margin-left: 16px;
 }
 
 .footer-links li {
@@ -1468,18 +1473,22 @@ input[type="radio"] {
     }
     .main-container-top-above {
         padding: 0 !important; /* Remove padding on mobile */
-        margin-bottom: -72px;
+        margin-bottom: -88px;
         height: 144px; /* Allow height to adjust based on content */
     }
 
     .logo-text-container {
         display: flex;
-        justify-content: center; /* Horizontally center the content */
+        justify-content: left; /* Horizontally center the content */
         align-items: center; /* Vertically align the logo and text */
         width: 100%; /* Make it fill the container */
         text-align: center; /* Center text */
         gap: 8px; /* Add some space between the logo and text */
     }
+    .logo-text-container-link{
+        justify-content: center;
+    }
+
     .logo-text-container img {
         max-width: 100%; /* Make logo responsive */
         height: auto; /* Maintain aspect ratio */
@@ -1524,12 +1533,7 @@ input[type="radio"] {
         padding-right: 16px;
         height: 56px;
     }
-    .logo-text-container{
-        justify-content: left;
-    }
-    .main-container-top-above{
-        margin-bottom: -88px;
-    }
+
     .product-container{
         display: grid;
         grid-template-columns: repeat(2,1fr);
@@ -1588,6 +1592,12 @@ input[type="radio"] {
     .footer-links{
         margin-bottom:24px;
         text-align: center;
+        margin-right: 16px;
+        margin-left: 16px;
+    }
+    .link-footer{
+        padding-bottom: 0;
+        padding-top: 24px;
     }
     .card-img-product{
     height: 100%; /* Match parent container height */
@@ -1668,6 +1678,9 @@ input[type="radio"] {
         align-items: center;
         justify-content: center;
     }
+    .text-confirmation br {
+        display: none; /* Hide the <br> on mobile */
+    }
 }
 
 .hamburger-btn {
@@ -1725,3 +1738,4 @@ input[type="radio"] {
 .link-footer-wrap{
     white-space: nowrap;
 }
+

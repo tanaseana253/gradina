@@ -4,8 +4,31 @@
 
 {% block content %}
     <div class="main-container">
+        <!-- Mobile Hamburger Menu -->
+        <div class="mobile-menu d-md-none">
+                <button class="hamburger-btn" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavbarMenu" aria-expanded="false" aria-controls="mobileNavbarMenu">
+                    ☰
+                </button>
+                <div class="collapse" id="mobileNavbarMenu">
+                    {% if request.user.is_authenticated %}
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'password_reset' %}">Schimba parola</a>
+                        </li>
+                        <li class="nav-item">
+                            <form id="logout-form" method="post" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="nav-link btn-link">Ieși din cont</button>
+                            </form>
+                        </li>
+                    </ul>
+                    {% else %}
+                    <a class="signin-button nav-link" href="{% url 'login' %}" role="button">Autentificare</a>
+                    {% endif %}
+                </div>
+        </div>
         <div class="main-container-top-above">
-            <div class="main-container-top">
+            <div class="main-container-top agreement-top">
                 <div class="logo-text-container">
                     <a href="{% url 'product_list' %}">
                         <img src="{% static 'images/logo_gradina_craciun_white.png' %}" alt="Logo">
@@ -71,12 +94,12 @@
             </span>
             <span>
                 <strong>Comanda prin email</strong>
-                <p>Puteti trimite comanda dumneavostra pe email la contact@gradinacraciun.ro: </p>
+                <p>Puteti trimite comanda dumneavoastra pe email la contact@gradinacraciun.ro: </p>
             </span>
             <ul>
             <li>Metoda de livrare: Livrare doar in Bucuresti si Ilfov, ne ocupam personal de livrarea produselor tale preferate.</li>
             <li>Datele comenzii: Nume si prenume, Adresa complete (Judet, Localitate, Strada, Numar, Scara, Bloc, etaj, Apartament, Interfon daca e cazul).</li>
-            <li>Precizati produsele dorite: Denumirea produslui, Codul de produs sau link-ul produsului.</li>
+            <li>Precizati produsele dorite: Denumirea produsului, Codul de produs sau link-ul produsului.</li>
             </ul>
 
             <span>
@@ -89,7 +112,7 @@
         </div>
 
                     <!-- Footer Section -->
-        <footer class="footer">
+        <footer class="footer link-footer">
             <div class="footer-container">
                 <ul class="footer-links">
                     <li><a href="{% url 'how_to_buy' %}">Cum cumpar</a></li>
