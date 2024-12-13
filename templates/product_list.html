@@ -67,7 +67,7 @@
                     <a class="signin-button nav-link" href="{% url 'login' %}" role="button">Autentificare</a>
                     {% endif %}
                 </div>
-            </div>
+        </div>
 
         <div class="content-area">
             <div class="content-container">
@@ -496,7 +496,7 @@ let isLoggedIn = "{{ user.is_authenticated|yesno:'true,false' }}" === 'true';
         const cartTotal = document.getElementById('cart-total');
         const emptyCartMessage = document.getElementById('empty-cart-message');
         const placeOrderBtn = document.getElementById('place-order-btn-list'); // // Desktop cart button
-        const mobileCartTotal = document.getElementById('mobile-cart`-total');
+        const mobileCartTotal = document.getElementById('mobile-cart-total');
         const mobileCartBtn = document.getElementById('mobile-cart-btn'); // Mobile cart button
 
 
@@ -505,6 +505,7 @@ let isLoggedIn = "{{ user.is_authenticated|yesno:'true,false' }}" === 'true';
         if (cart.length === 0) {
             emptyCartMessage.style.display = "block";  // Show empty cart message
             cartTotal.textContent = '0.00';  // Reset total to 0
+            mobileCartTotal.textContent = '0.00'; // Reset mobile cart total to 0
             total = 0;  // Make sure total is reset to 0
 
             // Disable desktop order button
@@ -515,12 +516,14 @@ let isLoggedIn = "{{ user.is_authenticated|yesno:'true,false' }}" === 'true';
             mobileCartBtn.classList.add('disabled');
             mobileCartBtn.setAttribute('href', '#');
 
+
             // Clear cart data from localStorage
             localStorage.removeItem('cart');
             localStorage.removeItem('total');
 
             saveCartToProfile(); // Save empty cart to the server
             return;  // Exit the function early
+
         } else {
             emptyCartMessage.style.display = "none";  // Hide empty cart message
 
@@ -614,12 +617,12 @@ let isLoggedIn = "{{ user.is_authenticated|yesno:'true,false' }}" === 'true';
 }
 
     function updateMobileCartTotal(total) {
-    const orderButton = document.getElementById("place-order-btn-list");
-    orderButton.setAttribute("data-total", total);
-}
+        const orderButton = document.getElementById("place-order-btn-list");
+        orderButton.setAttribute("data-total", total);
+    }
 
-    // Example usage (replace 123 with your dynamic total value):
-    updateMobileCartTotal(123);
+    // Example usage
+    updateMobileCartTotal(total);
 
 
 

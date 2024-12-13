@@ -4,8 +4,31 @@
 
 {% block content %}
     <div class="main-container">
+         <!-- Mobile Hamburger Menu -->
+        <div class="mobile-menu d-md-none">
+                <button class="hamburger-btn" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavbarMenu" aria-expanded="false" aria-controls="mobileNavbarMenu">
+                    ☰
+                </button>
+                <div class="collapse" id="mobileNavbarMenu">
+                    {% if request.user.is_authenticated %}
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'password_reset' %}">Schimba parola</a>
+                        </li>
+                        <li class="nav-item">
+                            <form id="logout-form" method="post" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="nav-link btn-link">Ieși din cont</button>
+                            </form>
+                        </li>
+                    </ul>
+                    {% else %}
+                    <a class="signin-button nav-link" href="{% url 'login' %}" role="button">Autentificare</a>
+                    {% endif %}
+                </div>
+        </div>
         <div class="main-container-top-above">
-            <div class="main-container-top">
+            <div class="main-container-top agreement-top">
                 <div class="logo-text-container">
                     <a href="{% url 'product_list' %}">
                         <img src="{% static 'images/logo_gradina_craciun_white.png' %}" alt="Logo">
@@ -45,8 +68,8 @@
             <section class="order-conf-panel2" id="metode-plata">
             <h2 class="text-title">Metode de plata</h2>
             <p class="text-optional span">
-                <span style="line-height: 0">
-                    Puteti cumpara produsele de pe site-ul <strong class="text-green">www.gradinacraciun.ro</strong> folosind urmatoarele instrumente de plata:
+                <span>
+                    Puteti cumpara produsele de pe site-ul <strong class="text-green">&ensp;www.gradinacraciun.ro&ensp;</strong> folosind urmatoarele instrumente de plata:
                 </span>
                 <p style="line-height: 0">
                     <strong style="line-height: 0">Ramburs <span class="text-red-large">(cash/card)</span> la livrarea coletului</strong>
@@ -76,7 +99,7 @@
         </section>
         </div>
 <!-- Footer Section -->
-        <footer class="footer">
+        <footer class="footer link-footer">
             <div class="footer-container">
                 <ul class="footer-links">
                     <li><a href="{% url 'how_to_buy' %}">Cum cumpar</a></li>
