@@ -270,12 +270,15 @@ def submit_order(request):
             })
             plain_message = strip_tags(html_message)
 
+            # Send the email to both the user and office email
+            recipient_list = [user_email, 'office@gradina-craciun.ro']
+
             # Send the email to the user
             send_mail(
                 subject,
                 plain_message,
                 settings.DEFAULT_FROM_EMAIL,
-                [user_email],
+                recipient_list,
                 html_message=html_message,
                 fail_silently=False
             )
