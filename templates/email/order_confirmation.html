@@ -50,25 +50,27 @@
         .textImportant { font-size: 16px; font-weight: 700; }
         .textRegular { font-size: 16px; font-weight: 400; }
         .textSecondary { font-size: 14px; font-weight: 400; }
-        .emailSection { max-width: 600px; padding-bottom: 48px;}
+        .emailSection { width: 100%; max-width: 600px; padding-bottom: 48px;}
         .sectionObject {
-            padding: 16px;
-            column-gap: 16px;
-            row-gap: 16px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 0px;
             flex-wrap: wrap;
         }
         .productImage {
             width: 40px;
             height: 40px;
-            background-color: rgb(172, 172, 172);
+            background-color: rgb(225, 225, 225);
             border-radius: 6px;
             aspect-ratio: 1;
+            background-size: cover;
         }
         .productInfoContainer {
             display: flex;
             justify-content: space-between;
             width: 100%;
-            max-width: 400px;
+            max-width: 494px;
         }
         .productInfoPair { gap: 4px; min-width: 160px; }
         .divider {
@@ -76,8 +78,6 @@
             opacity: 20%;
             height: 1px;
             width: 100%;
-            margin-left: 16px;
-            margin-right: 16px;
         }
     </style>
 </head>
@@ -88,37 +88,58 @@
             <img src="https://gradina-craciun.ro/images_email/logo_and_text.png" class="logoImage">
         </div>
         <div class="messageContainer">
-            <h1 class="textMain textTitle">Comandă înregistrată</h1>
-                <p>Salut{% if user.first_name %}, {{ user.first_name }}{% endif %}! <br><br>Am înregistrat comanda ta, cu următoarele detalii:</p>
+            <h1 class="textMain textTitle" style="margin-bottom:48px;">Comandă înregistrată</h1>
+                <p class="textMain textRegular">Salut{% if user.first_name %}, {{ user.first_name }}{% endif %}! <br><br>Am înregistrat comanda ta, cu următoarele detalii:</p>
 
             <!-- Products Section -->
             <div class="emailSection">
-                <p class="textMain textCategory" style="margin-bottom: 8px;">Produse</p>
-
                 {% for item in cart %}
-
                     <div class="sectionObject">
-                        <div class="productImage"></div>
-{#                        <img class="productImage" src="{{ item.image }}">#}
-                        <img src="{{ item.imageUrl }}" alt="{{ item.productName }}">
-                        <div class="productInfoContainer">
+                        <div class="productInfoContainer" style="justify-content: flex-start; width: auto; vertical-align: center">
+                            <img class="productImage" style="margin-right: 16px;" src="https://gradina-craciun-668739da08cd.herokuapp.com{{ item.imageUrl }}" alt="{{ item.productName }}">
                             <div class="productInfoPair">
                                 <p class="textMain textImportant">{{ item.productName }}</p>
-                                <p class="textMain textImportant">{{ item.id }}</p>
-                                <p class="textMain textImportant">{{ item.image }}</p>
-                                <p class="textMain textImportant">{{ item.imageUrl }}</p>
-                                <p class="textMain textImportant">${item.imageUrl}</p>
                                 <p class="textMain textSecondary">{{ item.price }} RON / buc</p>
                             </div>
+                        </div>
+                        <div class="productInfoContainer" style="padding-left: 56px;">
                             <div class="productInfoPair">
-                                <p class="textMain textImportant">{{ total|floatformat:2 }} RON</p>
-                                <p class="textMain textSecondary">{{ item.quantity }}</p>
+                                <p class="textMain textImportant">{% widthratio item.price 1 item.quantity %} RON</p>
+                                <p class="textMain textSecondary">{{ item.quantity }} buc</p>
                             </div>
                         </div>
                     </div>
                 {% endfor %}
 
-            <div class="divider"></div>
+                <div class="divider"></div>
+
+                <div class="sectionObject" style="padding: 0;">
+                    <div class="productInfoContainer" style="justify-content: flex-start; width: auto; padding-top: 16px; min-width: 272px;">
+                        <p class="textMain textSecondary productInfoPair">Total produse </p>
+                    </div>
+                    <div class="productInfoContainer" style="justify-content: flex-start; width: auto; padding-top: 16px;">
+                        <p class="textMain textSecondary productInfoPair">{{ total }} RON</p>
+                    </div>
+                </div>
+
+                <div class="sectionObject" style="padding: 0;">
+                    <div class="productInfoContainer" style="justify-content: flex-start; width: auto; min-width: 272px;">
+                        <p class="textMain textSecondary productInfoPair">Cost transport </p>
+                    </div>
+                    <div class="productInfoContainer" style="justify-content: flex-start; width: auto">
+                        <p class="textMain textSecondary productInfoPair">0 RON</p>
+                    </div>
+                </div>
+
+                <div class="sectionObject" style="padding: 24px 0 16px 0;">
+                    <div class="productInfoContainer" style="justify-content: flex-start; width: auto; min-width: 272px;">
+                        <p class="textMain textImportant productInfoPair">Total de plată </p>
+                    </div>
+                    <div class="productInfoContainer" style="justify-content: flex-start; width: auto">
+                        <p class="textMain textImportant productInfoPair">{{ total }} RON</p>
+                    </div>
+                </div>
+
             </div>
 
             <!-- Delivery Details Section -->
@@ -193,76 +214,3 @@
 
 
 
-
-<!--{#<!DOCTYPE html>#}-->
-<!--{##}-->
-<!--{#<html>#}-->
-<!--{##}-->
-<!--{#<head>#}-->
-<!--{#    <meta charset="utf-8">#}-->
-<!--{#    <title>Order Confirmation</title>#}-->
-<!--{#    <style>#}-->
-<!--{#        body {#}-->
-<!--{#            font-family: Arial, sans-serif;#}-->
-<!--{#            line-height: 1.6;#}-->
-<!--{#        }#}-->
-<!--{#        .container {#}-->
-<!--{#            padding: 20px;#}-->
-<!--{#            background-color: #f9f9f9;#}-->
-<!--{#        }#}-->
-<!--{#        .order-summary {#}-->
-<!--{#            margin-top: 20px;#}-->
-<!--{#        }#}-->
-<!--{#        .order-summary h3 {#}-->
-<!--{#            margin-bottom: 10px;#}-->
-<!--{#        }#}-->
-<!--{#        .order-summary ul {#}-->
-<!--{#            list-style-type: none;#}-->
-<!--{#            padding: 0;#}-->
-<!--{#        }#}-->
-<!--{#        .order-summary li {#}-->
-<!--{#            margin-bottom: 8px;#}-->
-<!--{#        }#}-->
-<!--{#        .total {#}-->
-<!--{#            font-weight: bold;#}-->
-<!--{#        }#}-->
-<!--{#    </style>#}-->
-<!--{#</head>#}-->
-<!--{##}-->
-<!--{#<body>#}-->
-<!--{#    <div class="container">#}-->
-<!--{#        <h2>Thank you for your order!</h2>#}-->
-<!--{#        <p>Hello {{ user_email }},</p>#}-->
-<!--{#        <p>We’ve received your order and are preparing it for delivery. Below is a summary of your order:</p>#}-->
-<!--{##}-->
-<!--{#        <div class="order-summary">#}-->
-<!--{#            <h3>Order Details:</h3>#}-->
-<!--{#            <ul>#}-->
-<!--{#                {% for item in cart %}#}-->
-<!--{#                    <li>{{ item.quantity }} x {{ item.productName }} @ {{ item.price }} RON each</li>#}-->
-<!--{#                {% endfor %}#}-->
-<!--{#            </ul>#}-->
-<!--{#            <p class="total">Total: {{ total|floatformat:2 }} RON</p>#}-->
-<!--{#        </div>#}-->
-<!--{##}-->
-<!--{#        <h3>Delivery Details:</h3>#}-->
-<!--{#        <p>Address: {{ delivery_info.address|default:"Not provided" }}</p>#}-->
-<!--{#        <p>Name: {{ delivery_info.name|default:"Not provided" }}</p>#}-->
-<!--{#        <p>Phone: {{ delivery_info.phone|default:"Not provided" }}</p>#}-->
-<!--{##}-->
-<!--{#        <h3>Billing Details:</h3>#}-->
-<!--{#        <p>Address: {{ billing_info.address }}</p>#}-->
-<!--{#        <p>Name: {{ billing_info.name }}</p>#}-->
-<!--{#        <p>Phone: {{ billing_info.phone }}</p>#}-->
-<!--{##}-->
-<!--{#        <h3>Payment Method:</h3>#}-->
-<!--{#        <p>{{ payment_method_display}}</p> &lt;!&ndash; Include payment method here &ndash;&gt;#}-->
-<!--{##}-->
-<!--{#        <p>If you have any questions, feel free to contact us.</p>#}-->
-<!--{#        <p>Thank you for shopping with us!</p>#}-->
-<!--{##}-->
-<!--{#        <p><strong>The Store Team</strong></p>#}-->
-<!--{#    </div>#}-->
-<!--{#</body>#}-->
-<!--{##}-->
-<!--{#</html>#}-->

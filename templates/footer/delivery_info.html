@@ -65,16 +65,17 @@
 
         {# Panel 2 - Informatii livrare#}
         <div  class="order-conf-panel3">
-            <section class="order-conf-panel2">
+            <section class="order-conf-panel2 without-border">
             <h2 class="text-optional" style="font-weight: bold">Informatii de livrare</h2>
             <p class="text-optional">
                 <span class="text-optional span" style="flex-wrap: wrap">La Grădina Crăciun, prioritatea noastră este să producem legume și fructe sănătoase,
                     proaspete și cu gustul inconfundabil al celor din grădina bunicilor. De aceea, acordăm o atenție deosebită fiecărei
                     etape din procesul de cultivare, de la sămânță până la recoltare. Pentru a asigura prospețimea și calitatea superioară
                     a produselor noastre, livrarea este efectuată exclusiv de echipa noastră.</span>
-                <span>Comenzile plasate pe site-ul nostru, gradinacraciun.ro, sunt procesate și livrate în termen de  <strong> &nbsp; 2-5 zile lucrătoare. </strong>
+                <span>Comenzile plasate pe site-ul nostru, gradinacraciun.ro, sunt procesate și livrate în termen de<b>&ensp;2-5 zile lucrătoare.</b>
                     Ne străduim să vă aducem produsele proaspete și de cea mai bună calitate direct din fermă pe masa dumneavoastră cât
-                    mai repede posibil.</span>
+                    mai repede posibil.
+                </span>
                 <span>Deoarece ne dedicăm în primul rând producției, uneori pot apărea întârzieri minore, mai ales în perioadele aglomerate
                     sau în condiții meteorologice nefavorabile. Cu toate acestea, vă asigurăm că facem tot posibilul pentru a respecta
                     termenele de livrare și pentru a vă informa prompt despre orice eventuale modificări.</span>
@@ -104,13 +105,13 @@
         <footer class="footer link-footer">
             <div class="footer-container">
                 <ul class="footer-links">
-                    <li><a href="{% url 'how_to_buy' %}">Cum cumpar</a></li>
-                    <li><a href="{% url 'delivery_info' %}">Informatii livrare</a></li>
-                    <li><a href="{% url 'terms_and_conditions' %}">Termeni si conditii</a></li>
-                    <li><a href="{% url 'about_us' %}">Despre noi</a></li>
-                    <li><a href="{% url 'payment_methods' %}">Metode de plata</a></li>
-                    <li><a href="{% url 'return_policy' %}">Politica de retur</a></li>
-                    <li><a href="{% url 'confidentiality' %}">Confidentialitate</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'how_to_buy' %}">Cum cumpar</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'delivery_info' %}">Informatii livrare</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'terms_and_conditions' %}">Termeni si conditii</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'about_us' %}">Despre noi</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'payment_methods' %}">Metode de plata</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'return_policy' %}">Politica de retur</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'confidentiality' %}">Confidentialitate</a></li>
                 </ul>
             </div>
         </footer>

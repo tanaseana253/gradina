@@ -259,7 +259,7 @@ def submit_order(request):
                 profile.save()
 
             # Compose email content
-            subject = 'Your Order Confirmation'
+            subject = 'Bacania Gradina Craciun - Comanda Inregistrata'
             html_message = render_to_string('email/order_confirmation.html', {
                 'cart': cart,
                 'total': total,
