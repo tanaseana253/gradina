@@ -184,9 +184,13 @@
                                 const favoriteCheckbox = document.getElementById('filtru_favorite');
 
 
+                                function removeDiacritics(str) {
+                                    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                                }
+
                                 // Filtering function
                                 function gc_searchFunction() {
-                                    const input = searchInput.value.toUpperCase();
+                                    const input = removeDiacritics(searchInput.value.toUpperCase());
                                     const cards = document.getElementsByClassName('card-enabled-gc');
                                     const selectedCategories = Array.from(document.querySelectorAll('.checkbox:checked'))
                                                                      .map(cb => cb.value);
@@ -196,7 +200,7 @@
 
                                     for (let i = 0; i < cards.length; i++) {
                                         const card = cards[i];
-                                        const txtValue = card.querySelector('h5').textContent.trim().toUpperCase();
+                                        const txtValue = removeDiacritics(card.querySelector('h5').textContent.trim().toUpperCase());
                                         const productCategory = card.querySelector('h4').textContent.trim();
                                         const productStock = parseInt(card.querySelector('h6').textContent.trim());
                                         const isFavorited = card.getAttribute('data-favorites') === 'true';
@@ -538,6 +542,7 @@ let isLoggedIn = "{{ user.is_authenticated|yesno:'true,false' }}" === 'true';
 
         // Iterate through the cart and display each product in a card
         cart.forEach(item => {
+            if (item.quantity <= 0) return;
             const cartProduct = document.createElement('div');
             cartProduct.classList.add('cart-product');
 
