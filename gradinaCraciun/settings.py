@@ -38,6 +38,14 @@ ALLOWED_HOSTS = [
     'gradina-craciun-668739da08cd.herokuapp.com',
 ]
 
+# Add dynamic hosts from environment variable (comma-separated)
+extra_hosts = os.getenv("DJANGO_ALLOWED_HOSTS", "")
+if extra_hosts:
+    ALLOWED_HOSTS += extra_hosts.split(",")
+
+# Strip any whitespace and remove empty values
+ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS if host.strip()]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -149,7 +157,7 @@ LOGOUT_REDIRECT_URL = "product_list"
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_HOST = 'cloud338.c-f.ro'
+EMAIL_HOST = 'cloud348.c-f.ro'
 # EMAIL_HOST = 'mail.aplicatiedjango.ro'
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
