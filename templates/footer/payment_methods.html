@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+    <div class="main-container">
+         <!-- Mobile Hamburger Menu -->
+        <div class="mobile-menu d-md-none">
+                <button class="hamburger-btn" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavbarMenu" aria-expanded="false" aria-controls="mobileNavbarMenu">
+                    ☰
+                </button>
+                <div class="collapse" id="mobileNavbarMenu">
+                    {% if request.user.is_authenticated %}
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'password_reset' %}">Schimba parola</a>
+                        </li>
+                        <li class="nav-item">
+                            <form id="logout-form" method="post" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="nav-link btn-link">Ieși din cont</button>
+                            </form>
+                        </li>
+                    </ul>
+                    {% else %}
+                    <a class="signin-button nav-link" href="{% url 'login' %}" role="button">Autentificare</a>
+                    {% endif %}
+                </div>
+        </div>
+        <div class="main-container-top-above">
+            <div class="main-container-top agreement-top">
+                <div class="logo-text-container">
+                    <a href="{% url 'product_list' %}">
+                        <img src="{% static 'images/logo_gradina_craciun_white.png' %}" alt="Logo">
+                    </a>
+                    <h1 class="h1-text logo-text">BĂCĂNIA GRĂDINA CRĂCIUN</h1>
+                </div>
+                <div class="sign-in">
+                    {% if request.user.is_authenticated %}
+                         <!-- Dropdown Button -->
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                Salut, {{ request.user.first_name|default:"Salut" }}
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+{#                                <li><a class="dropdown-item" href="#">Profil</a></li>#}
+{#                                <li><a class="dropdown-item" href="#">Istoric comenzi</a></li>#}
+                                <li><a class="dropdown-item" href="{% url 'password_reset' %}">Schimba parola</a></li>
+                                <li>
+                                    <form id="logout-form" method="post" action="{% url 'logout' %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item" style="background:none; border:none; color:black; cursor:pointer;">
+                                            Ieși din cont
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a class="signin-button" href="{% url 'login' %}" role="button">Autentificare</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {# Panel 5 - Metode de plata #}
+        <div  class="order-conf-panel3">
+            <section class="order-conf-panel2 without-border" id="metode-plata">
+            <h2 class="text-title">Metode de plata</h2>
+            <p class="text-optional span">
+                <span>
+                    Puteti cumpara produsele de pe site-ul <strong class="text-green">&ensp;www.gradinacraciun.ro&ensp;</strong> folosind urmatoarele instrumente de plata:
+                </span>
+                <p style="line-height: 0">
+                    <strong style="line-height: 0">Ramburs <span class="text-red-large">(cash/card)</span> la livrarea coletului</strong>
+                </p>
+                <span>
+                    Contravaloarea produselor si a serviciilor comandate pot fi achitate curierului chiar la livrarea acestora la adresa specificata de dumneavoastra.
+                </span>
+                <span>
+                    <strong>Transfer bancar</strong>
+                </span>
+                <span>
+                    Plata se poate face si prin virament bancar pe baza facturii proforme, livrarea produselor urmand a se face dupa intrarea sumei (contravaloarea totala a facturii) in contul nostru.
+                </span>
+                <span>
+                    Datele necesare pentru efectuarea platii prin transfer bancar sunt:
+                </span>
+                <span>
+                    <ul>
+                        <li>SC AGROSER MAC SRL</li>
+                        <li>CUI RO 28400481</li>
+                        <li>Nr. Reg.Com. J23/1134/2011</li>
+                        <li>Sediul social: Buftea, str. Tamas Nr. 8 BIS, Jud. Ilfov</li>
+                        <li>Banca <strong>BRD</strong> Cont IBAN: RO77BRDE445SV39844274450</li>
+                    </ul>
+                </span>
+            </p>
+        </section>
+        </div>
+<!-- Footer Section -->
+        <footer class="footer link-footer">
+            <div class="footer-container">
+                <ul class="footer-links">
+                    <li class="link-footer-wrap"><a href="{% url 'how_to_buy' %}">Cum cumpar</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'delivery_info' %}">Informatii livrare</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'terms_and_conditions' %}">Termeni si conditii</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'about_us' %}">Despre noi</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'payment_methods' %}">Metode de plata</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'return_policy' %}">Politica de retur</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'confidentiality' %}">Confidentialitate</a></li>
+                </ul>
+            </div>
+        </footer>
+    </div>
+
+
+{% endblock %}

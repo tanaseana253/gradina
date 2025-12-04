@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="login-container">
+        <div class="login-left-container">
+{#            <img src="{% static 'images/login_image.png' %}" alt="Image Login">#}
+        </div>
+
+        <div class="login-right-container">
+            <div class="login-form-container">
+                <div class="login-form">
+                    <form class="login-form-primary" method="post" action="{% url 'login' %}">
+                      {% csrf_token %}
+                        <div class="logo-text-container logo-text-container-link">
+                            <a href="{% url 'product_list' %}">
+                                <img src="{% static 'images/logo_gradina_craciun.png' %}" alt="Logo">
+                            </a>
+                            <h1 class="h1-text">BĂCĂNIA GRĂDINA CRĂCIUN</h1>
+                        </div>
+                        <h2 class="h2-text">Autentificare</h2>
+
+                        {% if form.errors %}
+                            <div class="error-message">
+                                <p>Autentificarea a eșuat. Vă rugăm să verificați emailul și parola și să încercați din nou.</p>
+                            </div>
+                        {% endif %}
+                        <div>
+                            <div class="login-form-secondary">
+                              <div class="login-form-group">
+                                <input type="email" class="form-control" id="exampleInputEmail1" name="username" aria-describedby="emailHelp" placeholder="Email"required>
+                              </div>
+                              <div class="login-form-group">
+                                <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Parolă" required>
+                              </div>
+                              <p><a class="login-text" href="{% url 'password_reset' %}">Am uitat parola</a></p>
+                              <button type="submit" class="gc-cta">Intră în cont</button>
+
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="login-footer">
+                    <p><a class="login-text" href="{% url 'signup' %}">Cont nou</a></p>
+                    <p><a class="login-text" href="{% url 'product_list' %}">Înapoi la magazin</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

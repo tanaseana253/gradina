@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+    <div class="main-container">
+        <!-- Mobile Hamburger Menu -->
+        <div class="mobile-menu d-md-none">
+                <button class="hamburger-btn" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavbarMenu" aria-expanded="false" aria-controls="mobileNavbarMenu">
+                    ☰
+                </button>
+                <div class="collapse" id="mobileNavbarMenu">
+                    {% if request.user.is_authenticated %}
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'password_reset' %}">Schimba parola</a>
+                        </li>
+                        <li class="nav-item">
+                            <form id="logout-form" method="post" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="nav-link btn-link">Ieși din cont</button>
+                            </form>
+                        </li>
+                    </ul>
+                    {% else %}
+                    <a class="signin-button nav-link" href="{% url 'login' %}" role="button">Autentificare</a>
+                    {% endif %}
+                </div>
+        </div>
+        <div class="main-container-top-above">
+            <div class="main-container-top agreement-top">
+                <div class="logo-text-container">
+                    <a href="{% url 'product_list' %}">
+                        <img src="{% static 'images/logo_gradina_craciun_white.png' %}" alt="Logo">
+                    </a>
+                    <h1 class="h1-text logo-text">BĂCĂNIA GRĂDINA CRĂCIUN</h1>
+                </div>
+                <div class="sign-in">
+                    {% if request.user.is_authenticated %}
+                         <!-- Dropdown Button -->
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                Salut, {{ request.user.first_name|default:"Salut" }}
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+{#                                <li><a class="dropdown-item" href="#">Profil</a></li>#}
+{#                                <li><a class="dropdown-item" href="#">Istoric comenzi</a></li>#}
+                                <li><a class="dropdown-item" href="{% url 'password_reset' %}">Schimba parola</a></li>
+                                <li>
+                                    <form id="logout-form" method="post" action="{% url 'logout' %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item" style="background:none; border:none; color:black; cursor:pointer;">
+                                            Ieși din cont
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a class="signin-button" href="{% url 'login' %}" role="button">Autentificare</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {#  Panel 1 - Cum cumpar#}
+        <div  class="order-conf-panel3">
+            <section class="order-conf-panel2 without-border">
+            <h2 class="text-title">Cum cumpăr</h2>
+            <p class="text-optional">
+                <span class="text-optional span">
+                    Cumpararea produselor din magazinul nostru o puteti face online, telefonic sau prin email.
+                </span>
+                <span>
+                    Comanda online
+                </span>
+                <span>
+                    Produsul pe care doriti sa il comandati poate fi gasit fie prin utilizarea meniului din partea de sus
+                    a paginii ce contine categoriile de produse, din meniul din partea dreapta cu toate categoriile si
+                    subcategoriile de produse sau prin folosirea campului de cautare. In momentul in care ati apasat comanda
+                    produsul va fi automat transferat in cosul de cumparaturi.
+                </span>
+            <span>
+                Dupa adaugarea in cos a tuturor produselor pe care doriti sa le comandati, procesul de cumparare se continua
+                prin apasarea butonului  si parcurgerea paginii de comanda. In pagina de comanda va trebui sa completati urmatoarele:
+                <ul>
+                    <li>Metoda de livrare: Livrare doar in Bucuresti si Ilfov, ne ocupam personal de livrarea produselor tale preferate.</li>
+                    <li>Datele comenzii: Nume si prenume, Adresa complete (Judet, Localitate, Strada, Numar, Scara, Bloc, etaj, Apartament, Interfon daca e cazul). </li>
+                    <li>Metoda de plata: RAMBURS la livrare (Cash sau POS).</li>
+                </ul>
+            </span>
+            <span>
+                Cu ajutorul numelui de utilizator si a parolei introduse, puteti sa va autentificati pentru a vedea istoricul comenzilor sau
+                stadiul comenzilor actuale, a modifica/sterge profilul dumneavoastra sau a face comenzi ulterioare fara a reintroduce datele de contact.
+            </span>
+            <span>
+                <strong>Comanda prin email</strong>
+                <p>Puteti trimite comanda dumneavoastra pe email la contact@gradinacraciun.ro: </p>
+            </span>
+            <ul>
+            <li>Metoda de livrare: Livrare doar in Bucuresti si Ilfov, ne ocupam personal de livrarea produselor tale preferate.</li>
+            <li>Datele comenzii: Nume si prenume, Adresa complete (Judet, Localitate, Strada, Numar, Scara, Bloc, etaj, Apartament, Interfon daca e cazul).</li>
+            <li>Precizati produsele dorite: Denumirea produsului, Codul de produs sau link-ul produsului.</li>
+            </ul>
+
+            <span>
+                <strong>Datorita preocuparii pentru productie nu putem procesa comenzi telefonic, va rugam sa comandati direct pe site!</strong>
+            </span>
+            <span class="text-red">
+                <strong>Valoarea minima a comenzilor este 150 lei.</strong>
+            </span>
+        </section>
+        </div>
+
+                    <!-- Footer Section -->
+        <footer class="footer link-footer">
+            <div class="footer-container">
+                <ul class="footer-links">
+                    <li class="link-footer-wrap"><a href="{% url 'how_to_buy' %}">Cum cumpar</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'delivery_info' %}">Informatii livrare</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'terms_and_conditions' %}">Termeni si conditii</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'about_us' %}">Despre noi</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'payment_methods' %}">Metode de plata</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'return_policy' %}">Politica de retur</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'confidentiality' %}">Confidentialitate</a></li>
+                </ul>
+            </div>
+        </footer>
+    </div>
+
+
+{% endblock %}

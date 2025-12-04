@@ -1,0 +1,777 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+    <div class="main-container">
+        <!-- Mobile cart total button -->
+        <div class="mobile-cart-wrapper">
+            <a href="{% url 'order_summary' %}" id="mobile-cart-btn" class="gc-cta cart-button mobile-cart-button">
+                Coșul tău •&nbsp;<span id="mobile-cart-total">0</span>&nbsp;RON
+            </a>
+        </div>
+        <div class="main-container-top-above">
+            <div class="main-container-top">
+                <div class="logo-text-container">
+                    <a href="{% url 'product_list' %}">
+                        <img class="gc-header-logo" src="{% static 'images/logo_gradina_craciun_white.png' %}" alt="Logo">
+                    </a>
+                    <h1 class="h1-text logo-text">BĂCĂNIA GRĂDINA CRĂCIUN</h1>
+                </div>
+                <!-- Desktop Menu -->
+                <div class="sign-in d-none d-md-flex">
+                    {% if request.user.is_authenticated %}
+                         <!-- Dropdown Button -->
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                 Salut{% if request.user.first_name %}, {{ request.user.first_name }}{% endif %}
+
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <li><a class="dropdown-item" href="{% url 'password_reset' %}">Schimba parola</a></li>
+                                <li>
+                                    <form id="logout-form" method="post" action="{% url 'logout' %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item" style="background:none; border:none; color:black; cursor:pointer;">
+                                            Ieși din cont
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a class="signin-button" href="{% url 'login' %}" role="button">Autentificare</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Hamburger Menu -->
+        <div class="mobile-menu d-md-none">
+                <button class="hamburger-btn" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavbarMenu" aria-expanded="false" aria-controls="mobileNavbarMenu">
+                    ☰
+                </button>
+                <div class="collapse" id="mobileNavbarMenu">
+                    {% if request.user.is_authenticated %}
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'password_reset' %}">Schimba parola</a>
+                        </li>
+                        <li class="nav-item">
+                            <form id="logout-form" method="post" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="nav-link btn-link">Ieși din cont</button>
+                            </form>
+                        </li>
+                    </ul>
+                    {% else %}
+                    <a class="signin-button nav-link" href="{% url 'login' %}" role="button">Autentificare</a>
+                    {% endif %}
+                </div>
+        </div>
+
+        <div class="content-area">
+            <div class="content-container">
+                <div id="toast-container">
+                    <div id="delivery-toast" class="toast align-items-center bg-success text-white border-0 maintoast gc-toast-height" role="alert" aria-live="assertive" aria-atomic="true">
+                      <div class="d-flex">
+                        <div class="toast-body">
+                            <a href="{% url 'delivery_info' %}" class="toast-link">
+                                🔔 Livrăm doar local! Verifică aici detalii despre zonele de livrare.
+                            </a>
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close" onclick="removeToast()"></button>
+                      </div>
+                    </div>
+                </div>
+                <div class="content-container-top">
+                    <div class="search_bar">
+                        <input type="text" id="myInput" class="search_input" onkeyup="gc_searchFunction()" placeholder="Caută în băcănie" title="Caută un produs">
+                    </div>
+                    <form class="filter-form">
+                        <div class="chip_container">
+                            <input type="checkbox" class="checkboxFilterContainer checkbox" value="legume" id="filtru_legume">
+                            <label class="filter-button" for="filtru_legume">Legume</label>
+                        </div>
+                        <div class="chip_container">
+                            <input type="checkbox" class="checkboxFilterContainer checkbox" value="fructe" id="filtru_fructe">
+                            <label class="filter-button" for="filtru_fructe">Fructe</label>
+                        </div>
+                        <div class="chip_container">
+                            <input type="checkbox" class="checkboxFilterContainer checkbox" value="conserve" id="filtru_conserve">
+                            <label class="filter-button" for="filtru_conserve">Conserve</label>
+                        </div>
+                        <div class="chip_container">
+                            <input type="checkbox" class="checkboxFilterContainer checkbox" value="alte bunatati" id="filtru_alte_bunatati">
+                            <label class="filter-button" for="filtru_alte_bunatati">Alte bunătăți</label>
+                        </div>
+                        <div class="chip_container">
+                            <input type="checkbox" class="checkboxFilterContainer checkbox" value="in_stoc" id="filtru_in_stoc">
+                            <label class="filter-button" for="filtru_in_stoc">În stoc</label>
+                        </div>
+
+                        {% if user.is_authenticated %}
+                            <div class="chip_container">
+                                <input type="checkbox" class="checkboxFilterContainer checkbox" value="favorite" id="filtru_favorite">
+                                <label class="filter-button" for="filtru_favorite">Favorite</label>
+                            </div>
+                        {% endif %}
+                    </form>
+                </div>
+                <div class="product-container" id="search_all_products">
+                    {% for product in products %}
+                        <div class="card-enabled-gc" data-favorites="{% if product.is_favorited %}true{% else %}false{% endif %}">
+                            <div class="card-image-container">
+                                <img class="card-img-product" id="card-image-id" src="{{ product.image.url }}" alt="Card image cap">
+
+                            </div>
+                            <div class="card-footer">
+                                <div class="card-footer-row-1">
+                                    <div class="product-info">
+                                        <div class="text-primary">
+                                            <h5 class="text-primary-gc">{{ product.name }}</h5>
+                                            <h4 class="product-price" style="display: none">{{ product.category }}</h4>
+{#                                            <h6 style="" >{{ product.stock }}</h6>#}
+                                            <h6 class="product-stock" style="display: none">{{ product.stock }}</h6>
+                                        </div>
+                                        <div class="text-secondary">
+                                            <h7 class="product-price">{{ product.price }}</h7>
+                                            <h7 class="product-price">RON</h7>
+                                        </div>
+                                    </div>
+                                    {% if user.is_authenticated %}
+                                        <form id="favorite-form-{{ product.id }}" class="favorite-form" method="post" data-product-id="{{ product.id }}">
+                                            {% csrf_token %}
+                                            <button type="button" class="btn btn-heart" onclick="toggleFavorite({{ product.id }})">
+                                                {% if product.is_favorited %}
+                                                    <span class="bi-heart-fill icon-favorite-selected" id="icon-{{ product.id }}"></span>
+                                                {% else %}
+                                                    <span class="bi-heart icon-favorite-enabled" id="icon-{{ product.id }}"></span>
+                                                {% endif %}
+                                            </button>
+                                        </form>
+                                    {% endif %}
+
+
+                                </div>
+                                <div class="card-footer-row-2">
+                                    {% if product.stock > 0 %}
+
+                                          <button type="button" class="btn btn-primary btn-gc-secondary" id="decrement-btn-{{ product.name }}" style="display: none;" onclick="decrementQuantity('{{ product.name }}', {{ product.price }})">
+                                            <span class="bi-dash gc-text-brand" style="font-size: 24px;"></span>
+                                        </button>
+
+                                         <span id="quantity-{{ product.name }}" style="display: none;">0</span>
+
+                                        <button type="button" class="btn btn-primary btn-gc-secondary" id="increment-btn-{{ product.name }}" onclick="incrementQuantity('{{ product.name }}', '{{ product.price }}', '{{ product.image.url }}', {{ product.stock }})">
+                                            <span class="bi-plus gc-text-brand"></span>
+                                        </button>
+                                    {% else %}
+                                        <button type="button" class="btn out-of-stock" disabled>
+                                            <span class="out-of-stock-text">Stoc epuizat</span>
+                                        </button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+{#///////////////////////////////         Filter scripts          //////////////////////////////////////////////////////////////////////////////#}
+                        <script>
+                            document.addEventListener('DOMContentLoaded', () => {
+
+                                // Ensure search/filter function re-runs when checkboxes are clicked
+                                const searchInput = document.getElementById('myInput');
+                                const checkboxes = document.querySelectorAll('.checkbox');
+                                const favoriteCheckbox = document.getElementById('filtru_favorite');
+
+
+                                function removeDiacritics(str) {
+                                    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                                }
+
+                                // Filtering function
+                                function gc_searchFunction() {
+                                    const input = removeDiacritics(searchInput.value.toUpperCase());
+                                    const cards = document.getElementsByClassName('card-enabled-gc');
+                                    const selectedCategories = Array.from(document.querySelectorAll('.checkbox:checked'))
+                                                                     .map(cb => cb.value);
+                                    const inStockChecked = selectedCategories.includes("in_stoc");
+                                    const favoriteChecked = favoriteCheckbox ? favoriteCheckbox.checked : false;
+                                    const filteredCategories = selectedCategories.filter(category => category !== "in_stoc" && category !== "favorite");
+
+                                    for (let i = 0; i < cards.length; i++) {
+                                        const card = cards[i];
+                                        const txtValue = removeDiacritics(card.querySelector('h5').textContent.trim().toUpperCase());
+                                        const productCategory = card.querySelector('h4').textContent.trim();
+                                        const productStock = parseInt(card.querySelector('h6').textContent.trim());
+                                        const isFavorited = card.getAttribute('data-favorites') === 'true';
+
+                                        const textMatch = txtValue.includes(input);
+                                        const categoryMatch = filteredCategories.length === 0 || filteredCategories.includes(productCategory);
+                                        const stockMatch = !inStockChecked || (inStockChecked && productStock > 0);
+                                        const favoriteMatch = !favoriteChecked || (favoriteChecked && isFavorited);
+
+                                        if (textMatch && categoryMatch && stockMatch && favoriteMatch) {
+                                            card.style.display = "";
+                                        } else {
+                                            card.style.display = "none";
+                                        }
+                                    }
+
+
+                                     // Save the current filter state
+                                    saveFilterState();
+                                }
+
+                                    // Save filter state to localStorage
+                                    function saveFilterState() {
+                                        const filters = {
+                                            selectedCategories: Array.from(document.querySelectorAll('.checkbox:checked'))
+                                                                      .map(cb => cb.value),
+                                            isFavoriteChecked: favoriteCheckbox ? favoriteCheckbox.checked : false,
+                                            searchText: searchInput.value
+                                        };
+                                        localStorage.setItem('filterState', JSON.stringify(filters));
+
+                                    }
+
+
+                                    // Restore filter state
+                                    const savedFilterState = localStorage.getItem('filterState');
+                                    if (savedFilterState) {
+                                        const filters = JSON.parse(savedFilterState);
+
+                                        // Restore checkbox states
+                                        filters.selectedCategories.forEach(category => {
+                                            const checkbox = document.querySelector(`.checkbox[value="${category}"]`);
+                                            if (checkbox) {
+                                                checkbox.checked = true; // Check the checkbox if it's in saved categories
+                                            }
+                                        });
+                                        // Restore favorite checkbox state
+                                             if (favoriteCheckbox) {
+                                                favoriteCheckbox.checked = filters.isFavoriteChecked;
+                                            }
+
+                                        // Restore search input value
+                                        searchInput.value = filters.searchText;
+
+                                        gc_searchFunction();
+        }
+
+
+                                    // Add event listeners to filters
+                                    checkboxes.forEach(checkbox => {
+                                        checkbox.addEventListener('click', gc_searchFunction);
+                                    });
+                                    searchInput.addEventListener('keyup', gc_searchFunction);
+                                        // Add event listener to favorite checkbox only if it exists
+                                    if (favoriteCheckbox) {
+                                        favoriteCheckbox.addEventListener('change', gc_searchFunction);
+                                    }
+                                });
+                        </script>
+
+
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="shopping-cart-container">
+                <div class="cart-header">
+                    <div class="cart-title-container">
+                        <h2 class="h2-text">Comanda ta</h2>
+                        <div class="cart-price-combo">
+                            <h2 class="cart-price" id="cart-total">0</h2>
+                            <h2 class="cart-price">RON</h2>
+                        </div>
+                    </div>
+{#                    <button id="place-order-btn" type="button" class="gc-cta cart-button" onclick="submitOrder()">Comandă</button>#}
+                    <a href="{% url 'order_summary' %}" id="place-order-btn-list" class="gc-cta cart-button" disabled>Comandă</a>
+
+                </div>
+                <div class="cart-divider"></div>
+
+                <!-- Empty state message -->
+                <div id="empty-cart-message" style="display: block;" class="empty-state-container">
+                    <h3 style="display: block;" class="empty-state-message">Adaugă produse în coș.</h3>
+                </div>
+                <div class="cart-product-list" id="cart-items"></div>
+            </div>
+        </div>
+
+    <!-- Footer Section -->
+        <footer class="footer">
+            <div class="footer-container">
+                <ul class="footer-links">
+                    <li class="link-footer-wrap"><a href="{% url 'how_to_buy' %}">Cum cumpar</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'delivery_info' %}">Informatii livrare</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'terms_and_conditions' %}">Termeni si conditii</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'about_us' %}">Despre noi</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'payment_methods' %}">Metode de plata</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'return_policy' %}">Politica de retur</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'confidentiality' %}">Confidentialitate</a></li>
+                </ul>
+            </div>
+        </footer>
+    </div>
+
+
+
+<div id="order-toast" class="toast align-items-center bg-success text-white border-0" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed; bottom: 24px; left: 50%; transform: translate(-50%, 0px); z-index: 1050;">
+  <div class="d-flex">
+    <div class="toast-body">
+      Comanda ta a fost plasată.
+    </div>
+    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+  </div>
+</div>
+
+
+<script>
+    function saveCartToProfile() {
+        if (isLoggedIn) {
+            fetch('/save-cart-to-profile/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken(), // Ensure you send the CSRF token
+                },
+                body: JSON.stringify({ cart: JSON.stringify(cart) }),
+            })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Cart saved to profile successfully');
+                    } else {
+                        console.error('Failed to save cart to profile');
+                    }
+                })
+                .catch(error => console.error('Error saving cart to profile:', error));
+        }
+    }
+
+    // Utility to get the CSRF token from the cookie
+    function getCSRFToken() {
+        const cookieValue = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrftoken='))
+            ?.split('=')[1];
+        return cookieValue;
+    }
+</script>
+
+<script>
+let isLoggedIn = "{{ user.is_authenticated|yesno:'true,false' }}" === 'true';
+</script>
+<script>
+    let cart = [];
+    let total = 0;
+
+    // Function to increment quantity
+    function incrementQuantity(productName, price, imageUrl, stock) {
+        const existingProduct = cart.find(item => item.productName === productName);
+        const quantitySpan = document.getElementById(`quantity-${productName}`);
+        const decrementBtn = document.getElementById(`decrement-btn-${productName}`);
+        const incrementBtn = document.getElementById(`increment-btn-${productName}`);
+
+        // Convert price to a number
+        price = parseFloat(price);
+
+        // If the product already exists in the cart, update its quantity
+        if (existingProduct) {
+            if (existingProduct.quantity < stock) {
+                existingProduct.quantity += 1;
+                updateProductQuantity(productName);
+            }
+
+            if (existingProduct.quantity >= stock) {
+                incrementBtn.disabled = true;
+            }
+        } else {
+            // If the product does not exist, add it to the cart
+            cart.push({ productName, price, imageUrl, quantity: 1, stock });
+            quantitySpan.textContent = 1;
+            quantitySpan.style.display = "inline";
+            decrementBtn.style.display = "inline"; // Show the decrement button
+        }
+
+            if (1 >= stock) {
+            incrementBtn.disabled = true;
+        }
+
+        total += price;
+        updateCart();
+    }
+
+
+    // Function to decrement quantity
+    function decrementQuantity(productName, price) {
+        const existingProduct = cart.find(item => item.productName === productName);
+        const quantitySpan = document.getElementById(`quantity-${productName}`);
+        const decrementBtn = document.getElementById(`decrement-btn-${productName}`);
+        const incrementBtn = document.getElementById(`increment-btn-${productName}`);
+
+        // Convert price to a number
+        price = parseFloat(price);
+
+        if (existingProduct && existingProduct.quantity > 0) {
+            existingProduct.quantity -= 1;
+            total -= price;
+
+            // If the quantity drops below stock, re-enable the plus button
+            incrementBtn.disabled = false;
+
+            if (existingProduct.quantity === 0) {
+                // Remove the product from the cart
+                cart = cart.filter(item => item.productName !== productName);
+                quantitySpan.style.display = "none"; // Hide quantity when it's 0
+                decrementBtn.style.display = "none"; // Hide decrement button when quantity is 0
+            }
+
+            updateProductQuantity(productName);
+            updateCart();
+        }
+
+        // Ensure total doesn't become negative (just a safeguard)
+        if (total < 0) {
+            total = 0;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const placeOrderBtn = document.getElementById('place-order-btn-list');
+
+        // Function to update the order button state
+        const updateOrderButton = () => {
+            if (cart.length === 0) {
+                placeOrderBtn.classList.add('disabled'); // Add the disabled class
+                placeOrderBtn.setAttribute('href', '#'); // Prevent navigation
+            } else {
+                placeOrderBtn.classList.remove('disabled'); // Remove the disabled class if cart is not empty
+                placeOrderBtn.setAttribute('href', '{% url "order_summary" %}'); // Allow navigation
+            }
+        };
+
+    // Check if the user is logged in and load the cart data
+    if (!isLoggedIn) {
+        // If not logged in, use localStorage to manage the cart
+        const savedCart = localStorage.getItem('cart');
+        cart = savedCart ? JSON.parse(savedCart) : [];
+    } else {
+        // If logged in, fetch the cart from the server
+        fetch('/get-old-cart/')
+            .then(response => response.json())
+            .then(data => {
+                cart = data.cart || []; // Load the cart from the server response
+                total = data.total || calculateTotalFromCart(cart);
+                updateOrderButton(); // Update the button state after cart is loaded
+                updateCart(); // Update the cart display on the page
+
+                cart.forEach(item => {
+                    const decrementBtn = document.getElementById(`decrement-btn-${item.productName}`);
+                    const incrementBtn = document.getElementById(`increment-btn-${item.productName}`);
+
+                    if (decrementBtn) {
+                        // Show the decrement button if quantity > 0
+                        decrementBtn.style.display = item.quantity > 0 ? "inline" : "none";
+                    }
+
+                    if (incrementBtn) {
+                        // Disable the increment button if the quantity reaches the stock limit
+                        incrementBtn.disabled = item.quantity >= item.stock;
+                    }
+
+                });
+            })
+            .catch(error => console.error('Error fetching old cart:', error));
+    }
+
+    // Update the button state initially
+    updateOrderButton();
+});
+
+    function calculateTotalFromCart(cart) {
+        return cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    }
+
+
+
+    // Function to update cart
+    function updateCart() {
+        const cartItems = document.getElementById('cart-items');
+        const cartTotal = document.getElementById('cart-total');
+        const emptyCartMessage = document.getElementById('empty-cart-message');
+        const placeOrderBtn = document.getElementById('place-order-btn-list'); // // Desktop cart button
+        const mobileCartTotal = document.getElementById('mobile-cart-total');
+        const mobileCartBtn = document.getElementById('mobile-cart-btn'); // Mobile cart button
+
+
+        cartItems.innerHTML = ''; // Clear the cart display
+
+        if (cart.length === 0) {
+            emptyCartMessage.style.display = "block";  // Show empty cart message
+            cartTotal.textContent = '0.00';  // Reset total to 0
+            mobileCartTotal.textContent = '0.00'; // Reset mobile cart total to 0
+            total = 0;  // Make sure total is reset to 0
+
+            // Disable desktop order button
+            placeOrderBtn.classList.add('disabled'); // Add the disabled class
+            placeOrderBtn.setAttribute('href', '#'); // Prevent navigation
+
+            // Disable mobile cart button
+            mobileCartBtn.classList.add('disabled');
+            mobileCartBtn.setAttribute('href', '#');
+
+
+            // Clear cart data from localStorage
+            localStorage.removeItem('cart');
+            localStorage.removeItem('total');
+
+            saveCartToProfile(); // Save empty cart to the server
+            return;  // Exit the function early
+
+        } else {
+            emptyCartMessage.style.display = "none";  // Hide empty cart message
+
+            // Enable desktop order button
+            placeOrderBtn.classList.remove('disabled'); // Remove the disabled class
+            placeOrderBtn.setAttribute('href', '{% url "order_summary" %}'); // Allow navigation
+
+            // Enable mobile cart button
+            mobileCartBtn.classList.remove('disabled');
+            mobileCartBtn.setAttribute('href', '{% url "order_summary" %}');
+            }
+
+        // Iterate through the cart and display each product in a card
+        cart.forEach(item => {
+            if (item.quantity <= 0) return;
+            const cartProduct = document.createElement('div');
+            cartProduct.classList.add('cart-product');
+
+            cartProduct.innerHTML = `
+                <div class="cart-info-all">
+                    <div class="cart-quantity-group">
+                        <h2 class="cart-quantity">${item.quantity}</h2>
+                        <h2 class="cart-quantity">x</h2>
+                    </div>
+                    <img class="cart-image" src="${item.imageUrl}" alt="${item.productName}">
+                    <div class="cart-info">
+                        <h2 class="cart-quantity-small">${item.productName}</h2>
+                        <div class="cart-quantity-group-small">
+                            <h2 class="cart-price-small">${item.price.toFixed(2)}</h2>
+                            <h2 class="cart-price-small">RON</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="cart-button-group">
+                    <button type="button" class="gc-cart" onclick="decrementQuantity('${item.productName}', ${item.price}, '${item.stock}')">
+                        <span class="bi-dash gc-text-brand"></span>
+                    </button>
+                    <button type="button" class="gc-cart" onclick="incrementQuantity('${item.productName}', ${item.price}, '${item.imageUrl}', ${item.stock})"
+                    ${item.quantity >= item.stock ? 'disabled' : ''}>
+                        <span class="bi-plus gc-text-cart"></span>
+                    </button>
+                </div>
+            `;
+
+            cartItems.appendChild(cartProduct);
+        });
+
+        cartTotal.textContent = total.toFixed(2); // Desktop
+        mobileCartTotal.textContent = total.toFixed(2); // Mobile
+
+        // Only store the cart in localStorage if the user is logged in
+        localStorage.setItem('cart', JSON.stringify(cart));  // Save cart data as a JSON string
+        localStorage.setItem('total', total.toFixed(2));  // Save the total price
+        saveCartToProfile();
+    }
+
+    // Update product quantity in product card
+    function updateProductQuantity(productName) {
+        const existingProduct = cart.find(item => item.productName === productName);
+        const quantitySpan = document.getElementById(`quantity-${productName}`);
+
+        if (existingProduct && existingProduct.quantity > 0) {
+            quantitySpan.textContent = existingProduct.quantity;
+            quantitySpan.style.display = "inline";
+        } else {
+            quantitySpan.textContent = 0;
+            quantitySpan.style.display = "none";
+        }
+    }
+
+   function removeToast() {
+        const toastContainer = document.getElementById('toast-container');
+        if (toastContainer) {
+            toastContainer.style.display = 'none';
+        }
+    }
+
+   function mergeCarts(loggedInCart, guestCart) {
+        const mergedCart = [...loggedInCart];
+        guestCart.forEach(guestItem => {
+            const existingItem = mergedCart.find(item => item.productName === guestItem.productName);
+            if (existingItem) {
+                // Update quantity in the logged-in cart
+                existingItem.quantity = Math.min(existingItem.quantity + guestItem.quantity, existingItem.stock);
+            } else {
+                // Add new item from guest cart
+                mergedCart.push(guestItem);
+            }
+        });
+
+        return mergedCart;
+}
+
+    function updateMobileCartTotal(total) {
+        const orderButton = document.getElementById("place-order-btn-list");
+        orderButton.setAttribute("data-total", total);
+    }
+
+    // Example usage
+    updateMobileCartTotal(total);
+
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // Check if the user is logged in
+        if (!isLoggedIn) {
+            // Restore cart data from localStorage for guests
+            const savedCart = localStorage.getItem('cart');
+            const savedTotal = localStorage.getItem('total');
+
+            cart = savedCart ? JSON.parse(savedCart) : []; // Restore the cart or initialize empty
+            total = savedTotal ? parseFloat(savedTotal) : 0; // Restore the total or initialize 0
+
+            updateCart(); // Update the cart display with the guest cart
+        } else {
+            // If the user is logged in, restore cart data from localStorage
+            const savedCart = localStorage.getItem('cart');
+            const savedTotal = localStorage.getItem('total');
+
+            if (savedCart) {
+                cart = JSON.parse(savedCart);  // Restore the cart data from localStorage
+                total = parseFloat(savedTotal);  // Restore the total price
+                updateCart();  // Update the UI with the restored cart data
+
+                cart.forEach(item => {
+                    const quantitySpan = document.getElementById(`quantity-${item.productName}`);
+                    const decrementBtn = document.getElementById(`decrement-btn-${item.productName}`);
+                    const incrementBtn = document.getElementById(`increment-btn-${item.productName}`);
+
+                    if (quantitySpan) {
+                        // Update the quantity span in the product card
+                        quantitySpan.textContent = item.quantity;
+                        quantitySpan.style.display = "inline";
+                    }
+
+                    if (decrementBtn) {
+                        // Show the decrement button if quantity > 0
+                        decrementBtn.style.display = item.quantity > 0 ? "inline" : "none";
+                    }
+
+                    if (incrementBtn) {
+                        // Disable the increment button if the quantity reaches the stock limit
+                        incrementBtn.disabled = item.quantity >= item.stock;
+                    }
+
+                    // Disable the increment button if the quantity reaches the stock limit
+                    if (item.quantity >= item.stock) {
+                        incrementBtn.disabled = true;
+                    }
+                });
+            }
+        }
+
+        const toastEl = document.getElementById('order-toast');
+        const orderPlaced = localStorage.getItem('orderPlaced');
+
+        if (orderPlaced && toastEl) {
+            const toast = new bootstrap.Toast(toastEl);
+            toast.show();
+            // Clear cart and total
+            cart = [];
+            total = 0;
+            localStorage.removeItem('cart');
+            localStorage.removeItem('total');
+
+
+            // Remove the flag from local storage after showing the toast
+            localStorage.removeItem('orderPlaced');
+            // Update the cart display to reflect the empty state
+            updateCart();
+        }
+
+
+            // New Delivery Toast Code
+        const deliveryToastEl = document.getElementById('delivery-toast');
+        if (deliveryToastEl) {
+            const deliveryToast = new bootstrap.Toast(deliveryToastEl, { autohide: false });
+            deliveryToast.show(); // Show the delivery toast and keep it displayed
+        }
+
+        // Add logout button functionality
+        const logoutButton = document.getElementById('logout-form');
+        if (logoutButton) {
+            logoutButton.addEventListener('submit', function (event) {
+                // Clear localStorage cart data
+                localStorage.removeItem('cart');
+                localStorage.removeItem('total');
+            });
+        }
+
+    });
+</script>
+
+{#////////////////////            Favorite script             //////////////#}
+    <script>
+        function toggleFavorite(productId) {
+            const icon = document.getElementById('icon-' + productId);
+            const form = document.getElementById('favorite-form-' + productId);
+            const productCard = form.closest('.card-enabled-gc');  // Find the product card to update the data-favorites attribute
+            const csrftoken = form.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            // Make an AJAX request
+            fetch("{% url 'toggle_favorite' 0 %}".replace('0', productId), {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({}),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Toggle the heart icon based on the response
+                    if (icon.classList.contains('icon-favorite-selected')) {
+                        icon.classList.remove('icon-favorite-selected');
+                        icon.classList.add('icon-favorite-enabled');
+                        icon.classList.replace('bi-heart-fill', 'bi-heart');
+                        // Update data-favorites attribute to 'false'
+                        productCard.setAttribute('data-favorites', 'false');
+                    } else {
+                        icon.classList.remove('icon-favorite-enabled');
+                        icon.classList.add('icon-favorite-selected');
+                        icon.classList.replace('bi-heart', 'bi-heart-fill');
+                        // Update data-favorites attribute to 'true'
+                        productCard.setAttribute('data-favorites', 'true');
+                    }
+
+                    // Check if the "Favorites" filter is active
+                    const favoriteCheckbox = document.getElementById('filtru_favorite');
+                    if (favoriteCheckbox.checked && !data.favorited) {
+                        // If the "Favorites" filter is enabled and the product is unfavorited, hide the card
+                        productCard.style.display = 'none';
+                    }
+
+                    // Reapply the filter to reflect the change in favorite status
+                    gc_searchFunction();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+{% endblock %}
+

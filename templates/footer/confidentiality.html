@@ -1,0 +1,452 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="main-container">
+        <!-- Mobile Hamburger Menu -->
+        <div class="mobile-menu d-md-none">
+                <button class="hamburger-btn" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavbarMenu" aria-expanded="false" aria-controls="mobileNavbarMenu">
+                    ☰
+                </button>
+                <div class="collapse" id="mobileNavbarMenu">
+                    {% if request.user.is_authenticated %}
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'password_reset' %}">Schimba parola</a>
+                        </li>
+                        <li class="nav-item">
+                            <form id="logout-form" method="post" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="nav-link btn-link">Ieși din cont</button>
+                            </form>
+                        </li>
+                    </ul>
+                    {% else %}
+                    <a class="signin-button nav-link" href="{% url 'login' %}" role="button">Autentificare</a>
+                    {% endif %}
+                </div>
+        </div>
+        <div class="main-container-top-above">
+            <div class="main-container-top agreement-top">
+                <div class="logo-text-container">
+                    <a href="{% url 'product_list' %}">
+                        <img src="{% static 'images/logo_gradina_craciun_white.png' %}" alt="Logo">
+                    </a>
+                    <h1 class="h1-text logo-text">BĂCĂNIA GRĂDINA CRĂCIUN</h1>
+                </div>
+                <div class="sign-in">
+                    {% if request.user.is_authenticated %}
+                         <!-- Dropdown Button -->
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                Salut, {{ request.user.first_name|default:"Salut" }}
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+{#                                <li><a class="dropdown-item" href="#">Profil</a></li>#}
+{#                                <li><a class="dropdown-item" href="#">Istoric comenzi</a></li>#}
+                                <li><a class="dropdown-item" href="{% url 'password_reset' %}">Schimba parola</a></li>
+                                <li>
+                                    <form id="logout-form" method="post" action="{% url 'logout' %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item" style="background:none; border:none; color:black; cursor:pointer;">
+                                            Ieși din cont
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a class="signin-button" href="{% url 'login' %}" role="button">Autentificare</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {# Panel 7 - Confidentialitate #}
+        <div  class="order-conf-panel3">
+            <section class="order-conf-panel2 without-border">
+            <h2 class="text-title">Confidentialitate</h2>
+            <p class="text-optional">
+                <span class="text-optional span">
+                    Confidentialitatea datelor dumneavoastra cu caracter personal reprezinta una dintre preocuparile principale
+                    ale AGROSER MAC SRL, cu sediul in Buftea, Str. Tamas, nr.8 BIS, Romania, in calitate de operator de date.
+                </span>
+                <span>
+                    Acest document are rolul de a va informa cu privire la prelucrarea datelor dumneavoastra cu caracter personal,
+                    in contextul utilizarii paginii de internet www.gradinacraciun.ro, la care ne vom referi in continuare cu denumirea "site-ul".
+                </span>
+
+                <span>
+                    Cuprins
+                </span>
+
+                <span>
+                    <ol>
+                        <li><strong>Categoriile de date cu caracter personal prelucrate</strong></li>
+                        <li><strong>Scopurile si temeiurile prelucrarii</strong></li>
+                        <li><strong>Durata pentru care va prelucram datele</strong></li>
+                        <li><strong>Dezvaluirea datelor cu caracter personal</strong></li>
+                        <li><strong>Transferul datelor cu caracter personal</strong></li>
+                        <li><strong>Drepturile de care beneficiati</strong></li>
+                        <li><strong>Confidentialitatea minorilor</strong></li>
+                        <li><strong>Modificari in politica de confidentialitate</strong></li>
+                    </ol>
+                </span>
+                <span class="text-title">
+                    1. Categoriile de date cu caracter personal prelucrate
+                </span>
+                <span>
+                    A. Daca sunteti client al site-ului, va prelucra datele dumneavoastra cu caracter personal, cum ar fi:
+                </span>
+                <span>
+                    <ul>
+                        <li>Nume si prenume</li>
+                        <li>Numar de telefon</li>
+                        <li>Adresa de e-mail</li>
+                        <li>Adresa de facturare</li>
+                        <li>Adresa de livrare</li>
+                        <li>
+                            Date referitoare la modul in care utilizati site-ul (de exemplu, comportamentul /preferintele /obisnuintele
+                            dumneavoastra in cadrul domains
+                        </li>
+                        <li>Precum si orice alte categorii de date pe care le furnizati in mod direct in contextul crearii contului de utilizator,
+                            in contextul plasarii unei comenzi prin intermediul site-ului sau in orice alt mod care rezulta din utilizarea site-ului.
+                        </li>
+                    </ul>
+                </span>
+                <span>
+                    Daca pentru a va crea cont de utilizator pe site, utilizati contul dumneavoastra de Facebook sau Google,
+                    va prelucra urmatoarele date publice de profil afisate de aplicatiile respective: nume utilizator, adresa de e-mail.
+                </span>
+                <span class="text-optional span">
+                    In cazul in care alegeti sa va creati cont de utilizator doar inainte de a finaliza comanda unui produs disponibil
+                    pe site, se va solicita adresa dumneavoastra de e-mail in baza careia va fi creat automat un cont.
+                </span>
+                <span>
+                    In cazul in care nu finalizati comanda, adresa de e-mail si celelalte date furnizate nu vor fi stocate, iar contul creat va fi sters automat.
+                </span>
+                <span>
+                    B. Daca sunteti vizitator al site-ului, va prelucra datele dumneavoastra cu caracter personal pe care le furnizati:
+                </span>
+                <span>
+                    <ul>
+                        <li>
+                            In mod direct in contextul utilizarii site-ului, cum ar fi datele pe care le furnizati in cadrul sectiunii
+                            de contact / intrebari / reclamatii, in masura in care ne contactati in acest fel.
+                        </li>
+                        <li>
+                            In mod indirect, date precum: adresa IP, browser folosit, durata navigarii, istoricul cautarilor,
+                            sistem de operare folosit, limba si pagini vizualizate, URL-uri complete, secventa de click-uri catre, prin
+                            si de la site-ul nostru, informatii sau produse vizualizate / cautate, durata vizitelor pe anumite pagini,
+                            informatii privind interactiunea cu paginile (ex. derularea, click-urile, trecerile de mouse), date despre
+                            comportamentul utilizatorilor.
+                        </li>
+                    </ul>
+                </span>
+                <span class="text-title">
+                    2. Scopurile si temeiurile de prelucrarii
+                </span>
+                <span>
+                    A. Daca sunteti client al site-ului, prelucreaza datele dumneavoastra cu caracter personal astfel:
+                </span>
+
+                <span>
+                    <ul>
+                        <li><strong>pentru desfasurarea relatiei contractuale dintre dumneavoastra si www.gradinacraciun.ro</strong>, respectiv pentru
+                            preluarea, validarea, expedierea si facturarea comenzii plasate pe site, informarea dumneavoastra asupra starii
+                            comenzii, organizarea returului de produse comandate etc.
+                        </li>
+                    </ul>
+                </span>
+                <span>
+                    <strong>Temei:</strong> Prelucrarea datelor dumneavoastra in acest scop are la baza contractul incheiat intre dumneavoastra si,
+                    definit in cuprinsul Termenelor si Conditiilor http://factual.silkmart.ro/termeni-si-conditii. Furnizarea datelor
+                    dumneavoastra cu caracter personal este necesara pentru executarea acestui contract. Refuzul furnizarii datelor
+                    poate avea drept consecinta imposibilitatea derularii raporturilor contractuale dintre dumneavoastra si .
+                </span>
+                <span>
+                    <ul>
+                        <li>
+                            <strong>pentru indeplinirea obligatiilor legale ce revin</strong> in contextul serviciilor prestate prin intermediul site-ului,
+                            inclusiv a obligatiilor in materie fiscala, precum si in materie de arhivare.
+                        </li>
+                    </ul>
+                </span>
+                <span>
+                    <strong>Temei:</strong> Prelucrarea datelor dumneavoastra pentru acest scop este necesara in baza unor obligatii legale.
+                    Furnizarea datelor dumneavoastra in acest scop este necesara. Refuzul furnizarii datelor poate avea drept consecinta
+                    imposibilitatea de a respecta obligatiile legale care ii revin si deci in imposibilitatea de a va oferi serviciile
+                    prin intermediul site-ului.
+                </span>
+                <span>
+                    <ul>
+                        <li><strong>pentru activitati de marketing</strong>, respectiv pentru transmiterea, prin intermediul mijloacelor de comunicare
+                            la distanta (e-mail, sms) de comunicari comerciale privind produsele si serviciile oferite de , prin
+                            intermediul site-ului www.gradinacraciun.ro.
+                        </li>
+                    </ul>
+                </span>
+                <span>
+                    <strong>Temei:</strong> Prelucrarea datelor dumneavoastra pentru acest scop are la baza consimtamantul dumneavoastra,
+                    daca alegeti sa-l furnizati.
+                </span>
+                <span>
+                    Va puteti exprima consimtamantul pentru prelucrarea datelor in acest scop prin bifarea casutei corespunzatoare
+                    de la momentul crearii contului, sau ulterior crearii contului, la sectiunea informatiile contului meu.
+                </span>
+                <span>
+                    Pentru dezabonarea de la primirea unor astfel de comunicari comerciale puteti folosi optiunea de la finalul
+                    fiecarui e-mail/ sms continand comunicari comerciale. In plus, puteti sa va dezabonati prin accesarea sectiunii "Informatiile contului meu".
+                </span>
+                <span>
+                    Furnizarea datelor dumneavoastra in acest scop este voluntara. Refuzul furnizarii consimtamantului pentru
+                    prelucrarea datelor dumneavoastra in acest scop nu va avea urmari negative pentru dumneavoastra.
+                </span>
+                <span>
+                    <ul>
+                        <li><strong>in scopul efectuarii diverselor analize</strong>, raportari privind modul de functionare a site-ului, realizarea
+                            de profiluri de preferinte de consum, in principal, in vederea imbunatatiri experientei oferite pe site.
+                        </li>
+                    </ul>
+                </span>
+                <span>
+                    <strong>Temei:</strong> Prelucrarea datelor dumneavoastra pentru acest scop are la baza interesul legitim al de a imbunatati
+                    permanent experienta clientilor pe site. Furnizarea datelor dumneavoastra in acest scop este voluntara.
+                    Refuzul furnizarii datelor pentru acest scop nu va avea urmari negative pentru dumneavoastra.
+                </span>
+                <span>
+                    B. Daca sunteti vizitator al site-ului, [detinatorul website-ului] prelucreaza datele dumneavoastra cu caracter personal astfel:
+                </span>
+                <span>
+                    <ul>
+                        <li>
+                            <strong>pentru activitati de marketing</strong>, respectiv pentru transmiterea, prin intermediul mijloacelor de comunicare
+                            la distanta (e-mail, sms), de comunicari comerciale privind produsele si serviciile oferite de <strong>SC AGROSER MAC SRL</strong>,
+                            prin intermediul site-ului.
+                        </li>
+                    </ul>
+                </span>
+                <span>
+                    <strong>Temei:</strong> Prelucrarea datelor dumneavoastra pentru acest scop are la baza consimtamantul dumneavoastra, daca alegeti sa-l furnizati.
+                </span>
+                <span>
+                    Va puteti exprima consimtamantul pentru prelucrarea datelor in acest scop prin completarea si bifarea casutei
+                    corespunzatoare din formularul pentru abonarea la newsletter disponibil pe site.
+                </span>
+                <span>
+                    Pentru dezabonarea de la primirea unor astfel de comunicari comerciale puteti folosi optiunea de la finalul fiecarui e-mail/ sms continand comunicari comerciale.
+                </span>
+                <span>
+                    Furnizarea datelor dumneavoastra in acest scop este voluntara. Refuzul furnizarii consimtamantului pentru prelucrarea
+                    datelor dumneavoastra in acest scop nu va avea urmari negative pentru dumneavoastra.
+                </span>
+                <span>
+                    <ul>
+                        <li>
+                            <strong>pentru rezolvarea plangerilor</strong>, reclamatiilor si pentru a monitoriza traficul si a imbunatati experienta dumneavoastra oferita pe site.
+                        </li>
+                    </ul>
+                </span>
+                <span>
+                    <strong>Temei:</strong> Prelucrarea datelor dumneavoastra pentru acest scop are la baza interesul legitim al SC AGROSER MAC SRL de a asigura functionarea corecta a site-ului, precum si pentru a imbunatati permanent experienta vizitatorilor site-ului, inclusiv prin solutionarea diferitelor comentarii, intrebari sau reclamatii.
+                </span>
+                <span>
+                    Furnizarea datelor dumneavoastra in acest scop este voluntara. Refuzul furnizarii datelor pentru acest scop nu va avea urmari negative pentru dumneavoastra.
+                </span>
+                <span class="text-title">
+                    3. Durata pentru care va prelucram datele
+                </span>
+                <span>
+                    Va prelucra datele dumneavoastra cu caracter personal atat cat este necesar pentru realizarea scopurilor de prelucrare mentionate mai sus.
+                </span>
+                <span>
+                    In cazul in care sunteti client, vom prelucra datele dumneavoastra pe intreaga durata a raporturilor contractuale
+                    si ulterior conform obligatiilor legale care revin in sarcina (de ex, in cazul documentelor justificative financiar-contabile
+                    pentru care termenul de pastrare prevazut de lege este de 10 ani de la data incheierii exercitiului financiar in cursul caruia au fost intocmite).
+                </span>
+                <span>
+                    In situatia in care sunteti client si va exercitati optiunea de stergere a contului de utilizator, prin apasarea
+                    butonul "stergere cont" din sectiunea "informatiile contului meu", va interpreta aceasta actiune ca optiunea dumneavoastra
+                    de a va dezabona de la primirea de comunicari comerciale prin care va tinem la curent despre produsele si serviciile
+                    oferite prin intermediul site-ului.
+                </span>
+                <span>
+                    In acest sens, daca alegeti sa va stergeti contul de utilizator, nu va vom mai trimite e-mailuri si / sau sms-uri de acest gen.
+                </span>
+                <span>
+                    Totusi, dorim sa va informam ca stergerea contului nu va avea ca efect automat stergerea datelor dumneavoastra
+                    cu caracter personal.
+                </span>
+                <span>
+                    In cazul in care doriti sa nu va mai fie prelucrate datele cu caracter personal sau daca doriti stergerea datelor, va puteti exercita drepturile detaliate la punctul 6 de mai jos.
+                </span>
+                <span>
+                    In cazul in care solicitati stergerea contului, insa pe acel cont exista cel putin o comanda activa, cererea de stergere a contului va putea fi inregistrata numai dupa livrarea produselor si finalizarea ultimei comenzi active.
+                </span>
+                <span>
+                    Daca va retrageti consimtamantul pentru prelucrarea datelor in scop de marketing, va inceta prelucrarea datelor dumneavoastra cu caracter personal in acest scop, fara insa a afecta prelucrarile desfasurate de pe baza consimtamantului exprimat de catre dumneavoastra inainte de retragerea acestuia.
+                </span>
+                <span class="text-title">
+                    4. Dezvaluirea datelor cu caracter personal
+                </span>
+                <span>
+                    Nu inchiriem / vindem datele dumneavoastra cu caracter personal catre terte parti.
+                </span>
+                <span>
+                    Pe langa operator, in anumite situatii, datele pot fi accesibile pentru terte parti precum furnizori de servicii,
+                    operatori de transport, furnizori de hosting, companii IT, numite, daca este necesar, ca persoane imputernicite de Operator.
+                </span>
+                <span>
+                    Acestea sunt obligate prin contract sa mentina confidentialitatea datelor si sa le foloseasca exclusiv in scopul
+                    pentru care le-au fost furnizate.
+                </span>
+                <span>
+                    De asemenea, am putea dezvalui datele dumneavoastra cu caracter personal catre autoritatile publice centrale /
+                    locale, in urmatoarele cazuri exemplificativ enumerate:
+                </span>
+                <span>
+                    <ul>
+                        <li>
+                            pentru administrarea site-ului
+                        </li>
+                        <li>
+                            in situatiile in care aceasta comunicare ar fi necesara pentru atribuirea de premii sau alte facilitati
+                            persoanelor vizate, obtinute ca urmare a participarii lor la diverse campanii promotionale organizate de
+                            catre prin intermediul site-ului;
+                        </li>
+                        <li>pentru mentinerea, personalizarea si imbunatatirea site-ului si a serviciilor derulate prin intermediul lui
+                            <strong>www.gradinacraciun.ro</strong>;
+                        </li>
+                        <li>
+                            pentru efectuarea analizei datelor, testarea si cercetarea, monitorizarea tendintelor de utilizare si activitate,
+                            dezvoltarea caracteristicilor de siguranta si autentificarea utilizatorilor;
+                        </li>
+                        <li>
+                            pentru transmiterea de comunicari comerciale de marketing, in conditiile si limitele prevazute de lege
+                            atunci cand dezvaluirea datelor cu caracter personal este prevazuta de lege etc.
+                        </li>
+                    </ul>
+                </span>
+                <span class="text-title">
+                    5. Transferul datelor cu caracter personal
+                </span>
+                <span>
+                    Datele cu caracter personal furnizate catre pot fi transferate in afara Romaniei, dar doar catre state din Uniunea Europeana.
+                </span>
+                <span  class="text-title">
+                    6. Drepturile de care beneficiati
+                </span>
+                <span>
+                    In conditiile prevazute de legislatia in materia prelucrarii datelor cu caracter personal, in calitate de persoane vizate, beneficiati de urmatoarele drepturi:
+                </span>
+                <span>
+                    <ul>
+                        <li>
+                            <strong>dreptul la informare</strong> - dreptul de a primi detalii privind activitatile de prelucrare efectuate de catre www.gradinacraciun.ro,
+                            conform celor descrise in prezentul document;
+                        </li>
+                        <li>
+                            <strong>dreptul de acces la date</strong> dreptul de a obtine confirmarea din partea cu privire la prelucrarea datelor cu
+                            caracter personal, precum si detalii privind activitatile de prelucrare precum modalitatea in care sunt
+                            prelucrate datele, scopul in care se face prelucrarea, destinatarii sau categoriile de destinatari ai datelor, etc;
+                        </li>
+                        <li>
+                            <strong>dreptul la rectificare</strong> - dreptul de a obtine corectarea, fara intarzieri justificate, de catre a datelor cu
+                            caracter personal inexacte/ nejustificate, precum si completarea datelor incomplete;
+                        </li>
+                        <li>
+                            <strong>dreptul la stergerea datelor</strong>, fara intarzieri nejustificate, ("dreptul de a fi uitat") - se aplica anumite
+                            conditii; Este posibil ca, in urma solicitarii de stergere a datelor, sa anonimizeze aceste date (lipsindu-le
+                            astfel de caracterul personal) si sa continue in aceste conditii prelucrarea pentru scopuri statistice;
+                        </li>
+                        <li>
+                            <strong>dreptul la restrictionarea prelucrarii</strong>, in anumite conditii;
+                        </li>
+                        <li> <strong>dreptul la portabilitatea datelor</strong> - dreptul de a primi datele cu caracter personal intr-o modalitate structurata,
+                             folosita in mod obisnuit si intr-un format usor de citit, precum si dreptul ca aceste date sa fie transmise de
+                             catre catre alt operator de date, in masura in care sunt indeplinite conditiile prevazute de lege;
+                        </li>
+                        <li> <strong>dreptul la opozitie</strong>
+                            <ul class="custom-list">
+                                <li>
+                                    in ceea ce priveste activitatile de prelucrare se poate exercita prin transmiterea unei
+                                    solicitari conform celor indicate mai jos;
+                                </li>
+                                <li>
+                                    in orice moment, din motive legate de situatia particulara in care se afla persoana vizata,
+                                    ca datele care o vizeaza sa fie prelucrate in temeiul interesului legitim al sau in temeiul
+                                    interesului public, cu exceptia cazurilor in care poate demonstra ca are motive legitime si
+                                    imperioase care justifica prelucarea si care prevaleaza asupra intereselor, drepturilor si
+                                    libertatilor persoanelor vizate sau ca scopul este constatarea, exercitarea sau apararea unui
+                                    drept in instanta;
+                                </li>
+                                <li>
+                                    in orice moment, in mod gratuit si fara nicio justificare, ca datele care o vizeaza sa fie
+                                    prelucrate in scop de marketing direct.
+                                </li>
+                            </ul>
+                        </li>
+                        <li> <strong>dreptul de a nu fi supus unei decizii individuale automate</strong>, dreptul de a nu fi subiectul unei decizii luate numai pe
+                            baza unor activitati de prelucrare automate, inclusiv crearea de profiluri, care produce efecte juridice care
+                            privesc persoana vizata sau o afecteaza in mod similar intr-o masura semnificativa;
+                        </li>
+                        <li> <strong>dreptul de a va adresa Autoritatii</strong> Nationale de supraveghere a Prelucrarii Datelor cu Caracter Personal sau
+                            instantelor competente, in masura in care considerati necesar.
+                        </li>
+                    </ul>
+                </span>
+                <span>
+                    Pentru orice intrebari suplimentare cu privire la modul in care datele cu caracter personal sunt prelucrate si
+                    pentru a va exercita drepturile mentionate mai sus, va rugam sa va adresati la adresa de email contact@gradinacraciun.ro :
+                </span>
+                <span class="text-title">
+                    7. Confidentialitatea minorilor
+                </span>
+                <span>
+                    <strong>SC AGROSER MAC SRL</strong> nu contacteaza cu buna stiinta sau nu colecteaza informatii de la persoane
+                    cu varsta sub 18 ani. Website-ul nu are ca scop solicitarea de informatii de orice fel de la persoane cu varsta sub 18 ani.
+                </span>
+                <span>
+                    Daca printr-o eroare intram in posesia unor astfel de informatii si suntem instiintati de acest lucru, vom
+                    obtine consimtamantul parental adecvat pentru a utiliza aceste informatii sau, in cazul in care nu este posibil,
+                    vom sterge informatiile de pe serverele noastre.
+                </span>
+                <span>
+                    Daca doriti sa ne comunicati primirea de informatii despre persoanele cu varsta sub 18 ani, va rugam sa ne contactati
+                    pe email la contact@gradinacraciun.ro.
+                </span>
+
+                <span class="text-title">
+                    8. Modificari in politica de confidentialitate
+                </span>
+                <span>
+                    Ne rezervam dreptul de a modifica aceasta politica de confidentialitate. In cazul unor modificari majore pe
+                    viitor vei fi instiintat pe email (daca este posibil) sau prin afisarea unui mesaj specific pe site.
+                </span>
+                <span>
+                    Aceasta pagina de internet foloseste fisiere de tip cookie. Pentru mai multe informatii cu privire la modul in care
+                    se folosesc aceste fisiere, va rugam sa accesati urmatorul link: https://www.gradinacraciun.ro/politica-de-cookies
+                </span>
+            </p>
+        </section>
+        </div>
+    <!-- Footer Section -->
+        <footer class="footer link-footer">
+            <div class="footer-container">
+                <ul class="footer-links">
+                    <li class="link-footer-wrap"><a href="{% url 'how_to_buy' %}">Cum cumpar</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'delivery_info' %}">Informatii livrare</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'terms_and_conditions' %}">Termeni si conditii</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'about_us' %}">Despre noi</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'payment_methods' %}">Metode de plata</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'return_policy' %}">Politica de retur</a></li>
+                    <li class="link-footer-wrap"><a href="{% url 'confidentiality' %}">Confidentialitate</a></li>
+                </ul>
+            </div>
+        </footer>
+
+
+    </div>
+
+
+{% endblock %}

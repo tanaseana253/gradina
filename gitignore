@@ -1,0 +1,26 @@
+# Byte-compiled files
+*.pyc
+__pycache__/
+
+# Virtual environment
+venv/
+
+# Django database
+db.sqlite3
+
+# Static files
+staticfiles/
+
+# Media uploads
+media/
+
+# Environment variables
+.env
+
+.idea/
+
+.git/
+node_modules/
+tests/
+venv/
+gradinaCraciun 1/

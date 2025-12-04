@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comandă înregistrată</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #F3f3f3;
+            padding: 48px 16px;
+            margin: 0px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+        p {margin: 0;}
+        h1, h2, h3, h4 {margin: 0;}
+        .emailContainer {
+            background-color: white;
+            width: 100%;
+            max-width: 974px;
+        }
+        .headerContainer{
+            padding: 16px 40px;
+            background-color: rgb(196, 72, 31);
+            display: flex;
+            align-items: center;
+            background-image: url("https://gradina-craciun.ro/images_email/email_background.png");
+        }
+        .logoImage {
+            max-height: 40px;
+            max-width: 365px;
+            margin-right: 20px;
+            object-fit: contain;
+        }
+        .messageContainer {
+            background-color: white;
+            {#display: flex;#}
+            {#flex-direction: column;#}
+            padding: 48px;
+            gap: 48px;
+        }
+        .textMain { color: black; }
+        .textTitle { font-size: 24px; font-weight: 700; }
+        .textCategory { font-size: 20px; font-weight: 700; }
+        .textImportant { font-size: 16px; font-weight: 700; }
+        .textRegular { font-size: 16px; font-weight: 400; }
+        .textSecondary { font-size: 14px; font-weight: 400; }
+        .emailSection { width: 100%; max-width: 600px; padding-bottom: 48px;}
+        .sectionObject {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 0px;
+            flex-wrap: wrap;
+        }
+        .productImage {
+            width: 40px;
+            height: 40px;
+            background-color: rgb(225, 225, 225);
+            border-radius: 6px;
+            aspect-ratio: 1;
+            background-size: cover;
+        }
+        .productInfoContainer {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 494px;
+        }
+        .productInfoPair { gap: 4px; min-width: 160px; }
+        .divider {
+            background-color: black;
+            opacity: 20%;
+            height: 1px;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="emailContainer">
+        <div class="headerContainer">
+            <img src="https://gradina-craciun.ro/images_email/logo_and_text.png" class="logoImage">
+        </div>
+        <div class="messageContainer">
+            <h1 class="textMain textTitle" style="margin-bottom:48px;">Comandă înregistrată</h1>
+                <p class="textMain textRegular">Salut{% if user.first_name %}, {{ user.first_name }}{% endif %}! <br><br>Am înregistrat comanda ta, cu următoarele detalii:</p>
+
+            <!-- Products Section -->
+            <div class="emailSection">
+                {% for item in cart %}
+                    <div class="sectionObject">
+                        <div class="productInfoContainer" style="justify-content: flex-start; width: auto; vertical-align: center">
+                            <img class="productImage" style="margin-right: 16px;" src="https://gradina-craciun-668739da08cd.herokuapp.com{{ item.imageUrl }}" alt="{{ item.productName }}">
+                            <div class="productInfoPair">
+                                <p class="textMain textImportant">{{ item.productName }}</p>
+                                <p class="textMain textSecondary">{{ item.price }} RON / buc</p>
+                            </div>
+                        </div>
+                        <div class="productInfoContainer" style="padding-left: 56px;">
+                            <div class="productInfoPair">
+                                <p class="textMain textImportant">{% widthratio item.price 1 item.quantity %} RON</p>
+                                <p class="textMain textSecondary">{{ item.quantity }} buc</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <div class="divider"></div>
+
+                <div class="sectionObject" style="padding: 0;">
+                    <div class="productInfoContainer" style="justify-content: flex-start; width: auto; padding-top: 16px; min-width: 272px;">
+                        <p class="textMain textSecondary productInfoPair">Total produse </p>
+                    </div>
+                    <div class="productInfoContainer" style="justify-content: flex-start; width: auto; padding-top: 16px;">
+                        <p class="textMain textSecondary productInfoPair">{{ total }} RON</p>
+                    </div>
+                </div>
+
+                <div class="sectionObject" style="padding: 0;">
+                    <div class="productInfoContainer" style="justify-content: flex-start; width: auto; min-width: 272px;">
+                        <p class="textMain textSecondary productInfoPair">Cost transport </p>
+                    </div>
+                    <div class="productInfoContainer" style="justify-content: flex-start; width: auto">
+                        <p class="textMain textSecondary productInfoPair">0 RON</p>
+                    </div>
+                </div>
+
+                <div class="sectionObject" style="padding: 24px 0 16px 0;">
+                    <div class="productInfoContainer" style="justify-content: flex-start; width: auto; min-width: 272px;">
+                        <p class="textMain textImportant productInfoPair">Total de plată </p>
+                    </div>
+                    <div class="productInfoContainer" style="justify-content: flex-start; width: auto">
+                        <p class="textMain textImportant productInfoPair">{{ total }} RON</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Delivery Details Section -->
+            <div class="emailSection">
+                <p class="textMain textCategory" style="margin-bottom: 8px;">Detalii de livrare</p>
+                <div class="sectionObject">
+                    <div class="productInfoPair">
+                        <p class="textMain textSecondary">Nume</p>
+                        <p class="textMain textRegular">Anghel Radu</p>
+                    </div>
+                </div>
+                <div class="sectionObject">
+                    <div class="productInfoPair">
+                        <p class="textMain textSecondary">Telefon</p>
+                        <p class="textMain textRegular">0741204838</p>
+                    </div>
+                </div>
+                <div class="sectionObject">
+                    <div class="productInfoPair">
+                        <p class="textMain textSecondary">Adresă</p>
+                        <p class="textMain textRegular">Valea Buzaului 10, sector 3, Bucuresti</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Billing Details Section -->
+            <div class="emailSection">
+                <p class="textMain textCategory" style="margin-bottom: 8px;">Detalii de facturare</p>
+                <div class="sectionObject">
+                    <div class="productInfoPair">
+                        <p class="textMain textSecondary">Nume</p>
+                        <p class="textMain textRegular"></p>
+                    </div>
+                </div>
+                <div class="sectionObject">
+                    <div class="productInfoPair">
+                        <p class="textMain textSecondary">Telefon</p>
+                        <p class="textMain textRegular"></p>
+                    </div>
+                </div>
+                <div class="sectionObject">
+                    <div class="productInfoPair">
+                        <p class="textMain textSecondary">Adresă</p>
+                        <p class="textMain textRegular"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delivery Method Section -->
+            <div class="emailSection">
+                <p class="textMain textCategory" style="margin-bottom: 8px;">Metodă de livrare</p>
+                <div class="sectionObject">
+                    <div class="productInfoPair">
+                        <p class="textMain textRegular">Numerar sau card la livrare</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Closing Message Inside messageContainer -->
+            <p class="textMain textRegular">Mulțumim, <br>Echipa Grădina Crăciun</p>
+        </div> <!-- .messageContainer end -->
+    </div> <!-- .emailContainer end -->
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
