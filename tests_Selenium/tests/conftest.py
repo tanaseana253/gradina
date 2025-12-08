@@ -1,14 +1,13 @@
 import sys, os
 
-# Compute root of Jenkins workspace: .../gradina-pipeline
+# Path to: C:/Users/tanas/.jenkins/workspace/gradina-pipeline
 PROJECT_ROOT = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "..", "..")
+    os.path.join(os.path.dirname(__file__), "..", "..", "..")
 )
 
-# Add project root to Python path
 sys.path.insert(0, PROJECT_ROOT)
 
-print("PYTHONPATH FIX APPLIED:", PROJECT_ROOT)
+print("PYTHONPATH SET TO:", PROJECT_ROOT)
 
 
 import warnings
