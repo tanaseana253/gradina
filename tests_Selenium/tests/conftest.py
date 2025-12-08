@@ -20,6 +20,16 @@ def driver():
 def login_page(driver):
     return LoginPage(driver, BASE_URL)
 
+
 @pytest.fixture
 def product_list_page(driver):
     return ProductListPage(driver, BASE_URL)
+
+
+@pytest.fixture(scope="session", autouse=True)
+def ensure_stock(db):
+    from store.models import Product
+    # Ensure all products have stock for Selenium tests
+    for product in Product.objects.all():
+        product.stock = 10
+        product.save()
