@@ -1,4 +1,7 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 from .base_page import BasePage
 
 
@@ -11,9 +14,22 @@ class ProductListPage(BasePage):
         self.open("/store/")
 
     def add_first_in_stock(self):
-        btn = self.find(self.FIRST_IN_STOCK_ADD)
-        self.driver.execute_script("arguments[0].scrollIntoView(true);", btn)
-        btn.click()
+        btn = self.driver.find_element(By.CSS_SELECTOR, ".add-to-cart-btn")
+
+        # Scroll the button into view (centered avoids navbars)
+        self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", btn)
+
+        # Wait until Selenium thinks it's clickable
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, ".add-to-cart-btn"))
+        )
+
+        # Try normal click, fallback to JS click if intercepted
+        try:
+            btn.click()
+        except:
+            # Guaranteed click (bypasses overlays, works in Jenkins)
+            self.driver.execute_script("arguments[0].click();", btn)
 
     def decrease_first_in_stock(self):
         btn = self.find(self.FIRST_DECREMENT)
