@@ -1,5 +1,8 @@
 import sys, os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+
+# Correct: go up TWO levels, not three
+PROJECT_ROOT = os.path.dirname(os.path.dirname(__file__))
+sys.path.insert(0, PROJECT_ROOT)
 
 import warnings
 import pytest
