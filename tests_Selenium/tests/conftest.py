@@ -1,13 +1,19 @@
 import sys, os
 
-# Path to: C:/Users/tanas/.jenkins/workspace/gradina-pipeline
+# Absolute path to the folder containing manage.py
 PROJECT_ROOT = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "..", "..", "..")
+    os.path.join(os.path.dirname(__file__), "..", "..")
 )
+
+# If Jenkins workspace has another root level, fix it:
+if not os.path.exists(os.path.join(PROJECT_ROOT, "manage.py")):
+    PROJECT_ROOT = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "..", "..", "..")
+    )
 
 sys.path.insert(0, PROJECT_ROOT)
 
-print("PYTHONPATH SET TO:", PROJECT_ROOT)
+print(">>> PYTHONPATH SET TO:", PROJECT_ROOT)
 
 
 import warnings
