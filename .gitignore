@@ -2,6 +2,5 @@ venv/
 .idea/
 __pycache__/
 .git/
-node_modules/
-tests/
+node_modules/git .a
 staticfiles/
