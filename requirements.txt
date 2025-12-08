@@ -51,3 +51,5 @@ whitenoise==6.7.0
 wsproto==1.2.0
 
 pytest~=9.0.1
+pytest-html
+pytest-xdist

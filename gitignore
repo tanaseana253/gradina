@@ -21,6 +21,5 @@ media/
 
 .git/
 node_modules/
-tests/
 venv/
 gradinaCraciun 1/
