@@ -241,7 +241,7 @@ def submit_order(request):
                     item['image']['absolute_url'] = request.build_absolute_uri(item['image']['url'])
 
                 # Save or clear delivery information based on the checkbox
-            profile = request.user.profile  # Get the user's profile
+            profile, created = Profile.objects.get_or_create(user=request.user)
 
             if save_for_next_order:
                 # Save delivery information
