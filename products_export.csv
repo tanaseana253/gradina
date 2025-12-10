@@ -1,0 +1,69 @@
+name,price,stock,category
+Ardei gras,"12,00",100,legume
+Ardei iute,"1,00",100,legume
+Ardei kapia,"15,00",100,legume
+Cartofi,"5,00",100,legume
+Castraveți cornison,"10,00",100,legume
+Castraveți fabio,"10,00",100,legume
+Ceapă galbenă,"7,00",100,legume
+Ceapă roșie,"9,00",0,legume
+Ceapă verde,"5,00",0,legume
+Dovlecel,"10,00",0,legume
+Fasole boabe,"17,00",1,legume
+Fasole păstăi,"30,00",0,legume
+Ridichi,"3,00",0,legume
+Roșii,"20,00",0,legume
+Salată,"4,00",0,legume
+Sfeclă roșie,"10,00",,legume
+Spanac,"50,00",0,legume
+Țelină,"5,00",0,legume
+Usturoi,"2,00",0,legume
+Usturoi verde,"5,00",0,legume
+Vinete,"12,00",0,legume
+Caise,"12,00",0,fructe
+Căpșuni,"30,00",0,fructe
+Cireșe,"35,00",0,fructe
+Mere,"8,00",0,fructe
+Pepene galben,"10,00",0,fructe
+Pepene roșu,"5,00",0,fructe
+Pere,"12,00",23,fructe
+Piersici,"12,00",20,fructe
+Prune,"6,00",18,fructe
+Struguri albi,"8,00",14,fructe
+Struguri roșii,"15,00",0,fructe
+Vișine,"25,00",19,fructe
+Castraveți murați în oțet,"15,00",0,conserve
+Castraveți murați în saramură,"15,00",0,conserve
+Compot de caise,"15,00",0,conserve
+Compot de cireșe,"17,00",23,conserve
+Compot de vișine,"15,00",17,conserve
+Dulceață de căpșuni,"25,00",0,conserve
+Dulceață de cireșe,"25,00",22,conserve
+Dulceață de vișine,"25,00",21,conserve
+Hrean,"15,00",24,conserve
+Magiun de prune,"22,00",24,conserve
+Pastă de ardei kapia,"18,00",0,conserve
+Pastă de roșii,"18,00",0,conserve
+Roșii bucăți,"15,00",25,conserve
+Roșii uscate,"55,00",24,conserve
+Salata de ardei iute în oțet,"18,00",7,conserve
+Salata de ardei iute în saramură,"15,00",0,conserve
+Salată gogonele,"20,00",3,conserve
+Suc de roșii,"20,00",6,conserve
+Tarhon,"15,00",25,conserve
+Vegeta de casă,"18,00",22,conserve
+Zacusca de ciuperci,"30,00",22,conserve
+Zacuscă de vinete,"25,00",24,conserve
+Ardei kapia copt,"60,00",15,alte bunatati
+Bere Carol IPA,"26,00",10,alte bunatati
+Bere Carol Red Ale,"26,00",21,alte bunatati
+Făină albă,"9,00",23,alte bunatati
+Făină integrală,"9,00",23,alte bunatati
+Mălai,"9,00",25,alte bunatati
+Măsline,"22,00",25,alte bunatati
+Vin alb Legământ,"35,00",24,alte bunatati
+Vin alb Truvai,"55,00",23,alte bunatati
+Vin roșu Legământ,"45,00",23,alte bunatati
+Vin roșu Truvai,"55,00",24,alte bunatati
+Vin roze Legământ,"35,00",23,alte bunatati
+Vinete coapte,"45,00",0,alte bunatati
