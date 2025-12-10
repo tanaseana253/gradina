@@ -390,7 +390,7 @@
                             <h2 class="cart-price title_alone">RON</h2>
                         </div>
                     </div>
-                    <button id="place-order-btn" type="button" class="gc-cta cart-button" onclick="submitOrder()">Comandă</button>
+                    <button id="place-order-btn" type="button" class="gc-cta cart-button" onclick="submitOrder(event)">Comandă</button>
 {#                    <button id="place-order-btn" type="button" class="gc-cta cart-button" onclick="placeOrder(event)" disabled>Comandă</button>#}
 
 
@@ -601,6 +601,13 @@
                 total = 0;
             }
         }
+
+        <script>
+            function setScroll() {
+                // Placeholder to stop errors — remove later if you don’t need scroll behavior
+            }
+        </script>
+
 
 
             document.addEventListener('DOMContentLoaded', () => {
