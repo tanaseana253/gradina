@@ -157,7 +157,11 @@ LOGOUT_REDIRECT_URL = "product_list"
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
+<<<<<<< HEAD
 EMAIL_HOST = 'cloud338.c-f.ro'
+=======
+EMAIL_HOST = 'cloud348.c-f.ro'
+>>>>>>> ead77dd6054e37580d97b52cacd1e7d99f236219
 # EMAIL_HOST = 'mail.aplicatiedjango.ro'
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True

@@ -21,5 +21,9 @@ media/
 
 .git/
 node_modules/
+<<<<<<< HEAD
+=======
+tests/
+>>>>>>> ead77dd6054e37580d97b52cacd1e7d99f236219
 venv/
 gradinaCraciun 1/
