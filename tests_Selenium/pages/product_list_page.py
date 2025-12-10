@@ -14,21 +14,25 @@ class ProductListPage(BasePage):
         self.open("/store/")
 
     def add_first_in_stock(self):
-        btn = self.driver.find_element(By.CSS_SELECTOR, ".add-to-cart-btn")
+        # Wait for ANY .add-to-cart-btn to appear in the DOM
+        btn = WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, ".add-to-cart-btn"))
+        )
 
-        # Scroll the button into view (centered avoids navbars)
-        self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", btn)
+        # Scroll it into view AFTER Selenium knows it exists
+        self.driver.execute_script(
+            "arguments[0].scrollIntoView({block: 'center'});", btn
+        )
 
-        # Wait until Selenium thinks it's clickable
+        # Wait until it's clickable (e.g., not overlapped)
         WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, ".add-to-cart-btn"))
         )
 
-        # Try normal click, fallback to JS click if intercepted
+        # Try to click normally, fallback to JS click
         try:
             btn.click()
         except:
-            # Guaranteed click (bypasses overlays, works in Jenkins)
             self.driver.execute_script("arguments[0].click();", btn)
 
     def decrease_first_in_stock(self):
