@@ -400,11 +400,13 @@ def check_batch_stock(request):
 def save_cart_to_profile(request):
     if request.method == 'POST':
         try:
+            # Ensure profile exists
+            profile, created = Profile.objects.get_or_create(user=request.user)
+
             data = json.loads(request.body)
             cart = data.get('cart', '')
 
             # Save the cart to the user's profile
-            profile = request.user.profile
             if cart == '[]':  # If the cart is empty, clear the old_cart field
                 profile.old_cart = None
             else:
@@ -421,7 +423,9 @@ def save_cart_to_profile(request):
 @login_required
 def get_old_cart(request):
     try:
-        profile = request.user.profile
+        # Ensure profile exists
+        profile, created = Profile.objects.get_or_create(user=request.user)
+
         old_cart = profile.old_cart  # This will be a JSON string or None
         cart = json.loads(old_cart) if old_cart else []  # Convert JSON string to Python list
 
