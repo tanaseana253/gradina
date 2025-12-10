@@ -166,7 +166,9 @@
 
                                          <span id="quantity-{{ product.name }}" style="display: none;">0</span>
 
-                                        <button type="button" class="btn btn-primary btn-gc-secondary" id="increment-btn-{{ product.name }}" onclick="incrementQuantity('{{ product.name }}', '{{ product.price }}', '{{ product.image.url }}', {{ product.stock }})">
+                                        <button type="button" class="btn btn-primary btn-gc-secondary"
+                                                id="increment-btn-{{ product.name }}"
+                                                onclick="incrementQuantity('{{ product.name }}','{{ product.price }}','{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/default_product.png' %}{% endif %}',{{ product.stock }})">
                                             <span class="bi-plus gc-text-brand"></span>
                                         </button>
                                     {% else %}
