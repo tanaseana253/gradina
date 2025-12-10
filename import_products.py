@@ -1,5 +1,11 @@
 import csv
 from store.models import Product
+import os
+import django
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "gradinaCraciun.settings")
+django.setup()
+
 
 def run():
     file_path = "exported_products.csv"
