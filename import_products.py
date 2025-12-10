@@ -39,3 +39,8 @@ def run():
             print(("Created: " if created else "Updated: ") + name)
 
     print("✔ Import completed!")
+
+
+# ADD THIS !!!
+if __name__ == "__main__":
+    run()
