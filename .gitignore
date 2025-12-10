@@ -2,12 +2,8 @@ venv/
 .idea/
 __pycache__/
 .git/
-<<<<<<< HEAD
-node_modules/git .a
-=======
 node_modules/
 tests/
->>>>>>> ead77dd6054e37580d97b52cacd1e7d99f236219
 staticfiles/
 *.pyc
 db.sqlite3
