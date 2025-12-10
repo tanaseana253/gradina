@@ -1,10 +1,11 @@
-import csv
-from store.models import Product
 import os
 import django
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "gradinaCraciun.settings")
-django.setup()
+django.setup()   # MUST be before importing models
+
+import csv
+from store.models import Product
 
 
 def run():
@@ -18,7 +19,7 @@ def run():
             row = {k.strip(): v for k, v in row.items()}
 
             name = row.get("name")
-            price = row.get("price")
+            price = row.get("price").replace(",", ".")
             category = row.get("category")
             stock = row.get("stock") or 0
 
