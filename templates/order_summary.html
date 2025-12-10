@@ -406,45 +406,6 @@
         </div>
     </div>
 
-<<<<<<< HEAD
-
-
-
-{#//////////////////        Script for mentaining scroll position on refresh            //////////////////#}
-{#    <script type="text/javascript">#}
-{##}
-{#        // Scroll to the saved position immediately after page load#}
-{#        function setScreen() {#}
-{#            var yScreen = Number(localStorage.getItem("yPos")); // Convert to number#}
-{#            if (yScreen) {#}
-{#                // Instantly scroll to the saved position without animation#}
-{#                window.scrollTo(0, yScreen);#}
-{#            }#}
-{#        }#}
-{##}
-{##}
-{#        function setScroll() {#}
-{#            var yScroll = window.scrollY; // Modern way to get the vertical scroll position#}
-{#            localStorage.setItem("yPos", yScroll);#}
-{#        }#}
-{##}
-{##}
-{#        function clearScreen() {#}
-{#            localStorage.setItem("yPos", 0);#}
-{#            window.scrollTo(0, 0);#}
-{#        }#}
-{##}
-{##}
-        {# Prevents default scroll restoration on reload #}
-{#        if ('scrollRestoration' in history) {#}
-{#            history.scrollRestoration = 'manual';#}
-{#        }#}
-{#        // Wait until the page is fully loaded and rendered, then apply the scroll position#}
-{#        window.addEventListener('load', setScreen);#}
-{#    </script>#}
-
-=======
->>>>>>> ead77dd6054e37580d97b52cacd1e7d99f236219
 {#////////////////////            Cart script             ///////////////////////////////////////////#}
 <script>
     function saveCartToProfile() {
