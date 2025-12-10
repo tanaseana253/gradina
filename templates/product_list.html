@@ -121,7 +121,11 @@
                     {% for product in products %}
                         <div class="card-enabled-gc" data-favorites="{% if product.is_favorited %}true{% else %}false{% endif %}">
                             <div class="card-image-container">
-                                <img class="card-img-product" id="card-image-id" src="{{ product.image.url }}" alt="Card image cap">
+                                <img class="card-img-product"
+                                     id="card-image-id"
+                                     src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/default_product.png' %}{% endif %}"
+                                     alt="Card image cap">
+
 
                             </div>
                             <div class="card-footer">
