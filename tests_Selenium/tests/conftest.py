@@ -1,37 +1,33 @@
-import sys, os
-
-# Absolute path to the folder containing manage.py
-PROJECT_ROOT = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "..", "..")
-)
-
-# If Jenkins workspace has another root level, fix it:
-if not os.path.exists(os.path.join(PROJECT_ROOT, "manage.py")):
-    PROJECT_ROOT = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), "..", "..", "..")
-    )
-
-sys.path.insert(0, PROJECT_ROOT)
-
-print(">>> PYTHONPATH SET TO:", PROJECT_ROOT)
-
-
-import warnings
-import pytest
+import os
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+import pytest
+
 from tests_Selenium.pages.login_page import LoginPage
 from tests_Selenium.pages.product_list_page import ProductListPage
 
+# --------------------------
+# Global test URL
+# --------------------------
 BASE_URL = "https://gradina-craciun-668739da08cd.herokuapp.com"
-warnings.filterwarnings("ignore", category=DeprecationWarning, module="pkg_resources")
 
 
 @pytest.fixture
 def driver():
-    driver = webdriver.Chrome()  # start Chrome
+    options = Options()
+
+    # Run headless only when Jenkins sets the env variable
+    if os.getenv("SELENIUM_HEADLESS") == "1":
+        options.add_argument("--headless=new")
+        options.add_argument("--disable-gpu")
+        options.add_argument("--window-size=1920,1080")
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--no-sandbox")
+
+    driver = webdriver.Chrome(options=options)
     driver.maximize_window()
     yield driver
-    driver.quit()  # close Chrome after test
+    driver.quit()
 
 
 @pytest.fixture
@@ -42,12 +38,3 @@ def login_page(driver):
 @pytest.fixture
 def product_list_page(driver):
     return ProductListPage(driver, BASE_URL)
-
-
-@pytest.fixture(scope="function", autouse=True)
-def ensure_stock(db):
-    from store.models import Product
-    for product in Product.objects.all():
-        product.stock = 10
-        product.save()
-
