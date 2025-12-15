@@ -1,3 +1,4 @@
+allure-pytest
 asgiref==3.8.1
 attrs==23.2.0
 beautifulsoup4==4.12.3
@@ -50,7 +51,10 @@ wheel==0.43.0
 whitenoise==6.7.0
 wsproto==1.2.0
 
-pytest~=9.0.1
+# === TESTING PACKAGES ===
+pytest==8.2.2
 pytest-html
 pytest-xdist
 pytest-django==4.8.0
+allure-pytest==2.15.2
+
