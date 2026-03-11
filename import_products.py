@@ -1,12 +1,5 @@
-import os
-import django
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "gradinaCraciun.settings")
-django.setup()   # MUST be before importing models
-
 import csv
 from store.models import Product
-
 
 def run():
     file_path = "exported_products.csv"
@@ -19,7 +12,7 @@ def run():
             row = {k.strip(): v for k, v in row.items()}
 
             name = row.get("name")
-            price = row.get("price").replace(",", ".")
+            price = row.get("price")
             category = row.get("category")
             stock = row.get("stock") or 0
 
@@ -39,8 +32,3 @@ def run():
             print(("Created: " if created else "Updated: ") + name)
 
     print("✔ Import completed!")
-
-
-# ADD THIS !!!
-if __name__ == "__main__":
-    run()

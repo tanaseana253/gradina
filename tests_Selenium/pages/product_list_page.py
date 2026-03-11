@@ -6,39 +6,64 @@ from .base_page import BasePage
 
 
 class ProductListPage(BasePage):
-    FIRST_IN_STOCK_ADD = (By.CSS_SELECTOR, "button[id^='increment-btn']")
-    FIRST_DECREMENT = (By.CSS_SELECTOR, "button[id^='decrement-btn']")
-    FIRST_QUANTITY = (By.CSS_SELECTOR, "span[id^='quantity-']")
+
+    # -------------------------------
+    # LOCATORS
+    # -------------------------------
+
+    IN_STOCK_CHECKBOX = (By.ID, "filtru_in_stoc")
+    IN_STOCK_LABEL = (By.CSS_SELECTOR, "label[for='filtru_in_stoc']")
+
+    PRODUCT_CARD = (By.CSS_SELECTOR, ".card-enabled-gc")
+    STOCK_VALUE = (By.CSS_SELECTOR, ".product-stock")
+
+    # Favorite locators
+    FAVORITE_CHECKBOX = (By.ID, "filtru_favorite")
+    FAVORITE_LABEL = (By.CSS_SELECTOR, "label[for='filtru_favorite']")
+    FAVORITE_ICON = (By.CSS_SELECTOR, ".icon-favorite-selected")
+
+    # -------------------------------
+    # NAVIGATION
+    # -------------------------------
 
     def open_store(self):
         self.open("/store/")
 
-    def add_first_in_stock(self):
-        # Wait for ANY .add-to-cart-btn to appear in the DOM
-        btn = WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, ".add-to-cart-btn"))
-        )
+    # -------------------------------
+    # IN-STOCK FILTER
+    # -------------------------------
 
-        # Scroll it into view AFTER Selenium knows it exists
+    def click_in_stock_filter(self):
+        label = self.wait.until(EC.element_to_be_clickable(self.IN_STOCK_LABEL))
         self.driver.execute_script(
-            "arguments[0].scrollIntoView({block: 'center'});", btn
+            "arguments[0].scrollIntoView({block: 'center'});", label
         )
+        label.click()
 
-        # Wait until it's clickable (e.g., not overlapped)
-        WebDriverWait(self.driver, 10).until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR, ".add-to-cart-btn"))
+    # -------------------------------
+    # FAVORITE FILTER
+    # -------------------------------
+
+    def click_favorite_filter(self):
+        """Clicks the 'Favorite' filter checkbox (only visible for logged-in users)."""
+        label = self.wait.until(EC.element_to_be_clickable(self.FAVORITE_LABEL))
+        self.driver.execute_script(
+            "arguments[0].scrollIntoView({block: 'center'});", label
         )
+        label.click()
 
-        # Try to click normally, fallback to JS click
-        try:
-            btn.click()
-        except:
-            self.driver.execute_script("arguments[0].click();", btn)
+    def is_favorited(self, product_card):
+        """Returns True if a product card contains the filled-heart icon."""
+        return len(product_card.find_elements(*self.FAVORITE_ICON)) > 0
 
-    def decrease_first_in_stock(self):
-        btn = self.find(self.FIRST_DECREMENT)
-        btn.click()
+    # -------------------------------
+    # PRODUCT VISIBILITY + STOCK
+    # -------------------------------
 
-    def get_quantity(self):
-        quantity_el = self.find(self.FIRST_QUANTITY)
-        return int(quantity_el.text.strip())
+    def get_visible_products(self):
+        all_cards = self.find_elements(self.PRODUCT_CARD)
+        return [c for c in all_cards if c.is_displayed()]
+
+    def get_stock_value(self, product):
+        text = product.find_element(*self.STOCK_VALUE).get_attribute("textContent")
+        return int(text.strip())

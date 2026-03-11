@@ -241,7 +241,7 @@ def submit_order(request):
                     item['image']['absolute_url'] = request.build_absolute_uri(item['image']['url'])
 
                 # Save or clear delivery information based on the checkbox
-            profile, created = Profile.objects.get_or_create(user=request.user)
+            profile = request.user.profile  # Get the user's profile
 
             if save_for_next_order:
                 # Save delivery information
@@ -400,13 +400,11 @@ def check_batch_stock(request):
 def save_cart_to_profile(request):
     if request.method == 'POST':
         try:
-            # Ensure profile exists
-            profile, created = Profile.objects.get_or_create(user=request.user)
-
             data = json.loads(request.body)
             cart = data.get('cart', '')
 
             # Save the cart to the user's profile
+            profile = request.user.profile
             if cart == '[]':  # If the cart is empty, clear the old_cart field
                 profile.old_cart = None
             else:
@@ -423,9 +421,7 @@ def save_cart_to_profile(request):
 @login_required
 def get_old_cart(request):
     try:
-        # Ensure profile exists
-        profile, created = Profile.objects.get_or_create(user=request.user)
-
+        profile = request.user.profile
         old_cart = profile.old_cart  # This will be a JSON string or None
         cart = json.loads(old_cart) if old_cart else []  # Convert JSON string to Python list
 
