@@ -121,11 +121,7 @@
                     {% for product in products %}
                         <div class="card-enabled-gc" data-favorites="{% if product.is_favorited %}true{% else %}false{% endif %}">
                             <div class="card-image-container">
-                                <img class="card-img-product"
-                                     id="card-image-id"
-                                     src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/default_product.png' %}{% endif %}"
-                                     alt="Card image cap">
-
+                                <img class="card-img-product" id="card-image-id" src="{{ product.image.url }}" alt="Card image cap">
 
                             </div>
                             <div class="card-footer">
@@ -166,9 +162,7 @@
 
                                          <span id="quantity-{{ product.name }}" style="display: none;">0</span>
 
-                                        <button type="button" class="btn btn-primary btn-gc-secondary"
-                                                id="increment-btn-{{ product.name }}"
-                                                onclick="incrementQuantity('{{ product.name }}','{{ product.price }}','{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/default_product.png' %}{% endif %}',{{ product.stock }})">
+                                        <button type="button" class="btn btn-primary btn-gc-secondary" id="increment-btn-{{ product.name }}" onclick="incrementQuantity('{{ product.name }}', '{{ product.price }}', '{{ product.image.url }}', {{ product.stock }})">
                                             <span class="bi-plus gc-text-brand"></span>
                                         </button>
                                     {% else %}

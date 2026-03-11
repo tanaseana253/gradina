@@ -13,8 +13,10 @@ class BasePage:
         self.wait = WebDriverWait(driver, 10)
 
     def open(self, path=""):
-        """Open a page by relative path."""
-        self.driver.get(f"{self.base_url}{path}")
+        if path.startswith("http"):
+            self.driver.get(path)
+        else:
+            self.driver.get(self.base_url + path)
 
     def find(self, locator):
         """Wait until the element becomes visible and return it."""
@@ -33,3 +35,10 @@ class BasePage:
     def type(self, locator, text):
         """Type into a field safely."""
         self.find(locator).send_keys(text)
+
+    def is_visible(self, element):
+        return element.is_displayed()
+
+    def find_elements(self, locator):
+        return self.driver.find_elements(*locator)
+
