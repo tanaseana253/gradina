@@ -7,3 +7,4 @@ tests/
 staticfiles/
 *.pyc
 db.sqlite3
+.env
